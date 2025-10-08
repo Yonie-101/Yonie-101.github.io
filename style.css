@@ -375,6 +375,15 @@ body.light-mode .hamburger.active .bar {
   body.light-mode .nav-links {
     background: rgba(230, 220, 255, 0.95);
   }
+
+  .carousel .project-card {
+    width: 200px;
+    height: 260px;
+  }
+
+  .carousel .project-card img {
+    height: 130px;
+  }
 }
 
   .contact-form {
