@@ -443,13 +443,16 @@ body.light-mode .cert-list {
   background: rgba(100, 0, 200, 0.05);
   color: #1a0030;
 }
-.carousel-container {
+
+
+  
+  .carousel-container {
   position: relative;
   width: 100%;
-  max-width: 900px;
+  max-width: 950px;
   margin: 0 auto;
-  overflow: hidden;
-  padding: 30px 0;
+  overflow: visible; /* prevents clipping of scaled cards */
+  padding: 50px 0;   /* more breathing room top & bottom */
 }
 
 .carousel {
@@ -458,27 +461,31 @@ body.light-mode .cert-list {
   align-items: center;
   gap: 25px;
   transition: transform 0.6s ease-in-out;
+  will-change: transform;
+  scroll-behavior: smooth;
 }
 
 .carousel .project-card {
   background: rgba(255, 255, 255, 0.05);
   width: 240px;
-  height: 300px;
+  height: 320px;
   flex: 0 0 auto;
   border-radius: 15px;
   text-align: center;
-  transform: scale(0.95);
-  opacity: 0.7;
-  transition: transform 0.35s ease, opacity 0.35s ease, background 0.3s;
+  transform: scale(0.9);
+  opacity: 0.6;
+  transition: transform 0.4s ease, opacity 0.4s ease, background 0.3s;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 .carousel .project-card img {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
@@ -498,15 +505,23 @@ body.light-mode .cert-list {
   -webkit-box-orient: vertical;
 }
 
-/* Active (center) card looks more subtle now */
+/* active (middle) card */
 .carousel .project-card.active {
-  transform: scale(1.05);
+  transform: scale(1.1);
   opacity: 1;
-  z-index: 2;
+  z-index: 3;
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* ensure adjacent cards fade smoothly */
+.carousel .project-card.prev,
+.carousel .project-card.next {
+  opacity: 0.85;
+  transform: scale(0.95);
+  z-index: 2;
+}
 
+/* Make sure arrows float correctly */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -517,11 +532,12 @@ body.light-mode .cert-list {
   font-size: 1.8rem;
   cursor: pointer;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
   text-align: center;
   transition: background 0.3s;
+  z-index: 5;
 }
 
 .carousel-arrow:hover {
@@ -536,26 +552,28 @@ body.light-mode .cert-list {
   right: 10px;
 }
 
-  /* Dots */
-  .carousel-dots {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-    gap: 8px;
-  }
-  
-  .carousel-dots span {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #a370ff;
-    opacity: 0.4;
-    cursor: pointer;
-    transition: opacity 0.3s;
-  }
-  
-  .carousel-dots span.active {
-    opacity: 1;
-  }
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.carousel-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #a370ff;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.carousel-dots span.active {
+  opacity: 1;
+}
+
+
 }
 
