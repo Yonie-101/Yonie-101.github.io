@@ -12,9 +12,14 @@ body {
 
 /* Light Mode */
 body.light-mode {
-  background-color: #f6f2ff;
-  color: #1a0030;
+  background-color: #faf6ff;
+  color: #2b004b;
 }
+
+body.light-mode .accent {
+  color: #7b3fff;
+}
+
 
 header {
   position: fixed;
@@ -35,9 +40,11 @@ body.light-mode header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 20px;
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
+
 
 .nav-right {
   display: flex;
@@ -57,14 +64,27 @@ body.light-mode header {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
+
 
 
 .logo {
+  display: flex;
+  align-items: center;
   font-size: 1.4rem;
   font-weight: 700;
   color: #c69cff;
+  gap: 8px;
 }
+
+.logo-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 
 /* Nav Links */
 .nav-links {
@@ -113,6 +133,27 @@ body.light-mode header {
   cursor: pointer;
   margin-right: 10px;
 }
+.theme-toggle {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle.spin {
+  transform: rotate(360deg);
+}
+
+/* Better contrast for light mode */
+body.light-mode .nav-links a {
+  color: #3b0066;
+}
+
+body.light-mode .nav-links a:hover {
+  color: #7b3fff;
+}
+
+body.light-mode .theme-toggle {
+  color: #7b3fff;
+}
+
 
 /* Hero Section */
 .hero {
@@ -238,22 +279,23 @@ body.light-mode footer {
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
   .nav-links {
-    position: absolute;
-    top: 70px;
-    right: -250px;
-    background: rgba(20, 0, 40, 0.95);
-    flex-direction: column;
-    align-items: flex-start;
-    width: 200px;
-    padding: 20px;
-    border-radius: 10px 0 0 10px;
-    transition: right 0.3s ease;
-    z-index: 9;
-  }
+  position: fixed;
+  top: 70px;
+  left: -250px;
+  background: rgba(20, 0, 40, 0.95);
+  flex-direction: column;
+  align-items: flex-start;
+  width: 220px;
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+  transition: left 0.3s ease;
+  z-index: 999;
+}
 
-  .nav-links.open {
-    right: 0;
-  }
+.nav-links.open {
+  left: 0;
+}
+
 
   .hamburger {
     display: flex;
@@ -266,5 +308,92 @@ body.light-mode footer {
   .theme-toggle {
     margin-right: 0;
   }
+
+  .contact-form {
+  margin-top: 30px;
+  max-width: 500px;
+  margin-inline: auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.contact-form button {
+  width: 100%;
+}
+
+body.light-mode .contact-form {
+  background: rgba(100, 0, 200, 0.05);
+}
+
+body.light-mode .contact-form input,
+body.light-mode .contact-form textarea {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a0030;
+}
+
+  .cert-list {
+  margin-top: 40px;
+  text-align: left;
+  max-width: 700px;
+  margin-inline: auto;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.cert-list h3 {
+  color: #c69cff;
+  margin-bottom: 10px;
+}
+
+.cert-list li {
+  margin-bottom: 6px;
+}
+
+body.light-mode .cert-list {
+  background: rgba(100, 0, 200, 0.05);
+  color: #1a0030;
+}
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.6s ease;
+  gap: 20px;
+}
+
+.project-card {
+  min-width: 250px;
+  flex-shrink: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.project-card.active {
+  transform: scale(1.15);
+  opacity: 1;
+}
+
+.project-card:not(.active) {
+  opacity: 0.7;
+}
+
+
 }
 
