@@ -297,7 +297,7 @@ body.light-mode footer {
     padding: 20px;
     border-radius: 10px 0 0 10px;
     transition: right 0.3s ease;
-    z-index: 9999; /* Increased to ensure above header */
+    z-index: 9999; /* Ensure above header */
   }
 
   .nav-links.open {
@@ -305,25 +305,32 @@ body.light-mode footer {
   }
 
   header {
-    overflow: visible; /* ensure dropdown isn’t clipped */
+    overflow: visible; /* prevent clipping */
   }
 
+  /* 👇 Fixed hamburger section */
   .hamburger {
     display: flex;
-    margin-right: 10px; /* gives breathing space from right edge */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    margin-right: 10px; /* space from screen edge */
+    padding: 8px; /* extra space so X icon isn’t cut off */
   }
-  
 
   .hamburger.active .bar:nth-child(1) {
-  transform: rotate(45deg) translateY(8px);
-}
-.hamburger.active .bar:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.active .bar:nth-child(3) {
-  transform: rotate(-45deg) translateY(-8px);
-}
+    transform: rotate(45deg) translateY(8px);
+    transform-origin: center;
+  }
 
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+    transform-origin: center;
+  }
 
   .nav-right {
     gap: 10px;
@@ -333,6 +340,7 @@ body.light-mode footer {
     margin-right: 0;
   }
 }
+
 
 
   .contact-form {
