@@ -156,18 +156,26 @@ body.light-mode .bar {
 .theme-toggle {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  width: 40px;               /* fixed width to avoid layout shifts */
+  height: 40px;              /* fixed height */
+  border-radius: 8px;
+  font-size: 18px;           /* emoji size */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #c69cff;
   cursor: pointer;
   margin-right: 10px;
-}
-.theme-toggle {
-  transition: transform 0.3s ease, color 0.3s ease;
+  flex-shrink: 0;            /* don't allow shrinking */
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(.2,.8,.2,1), color 0.25s ease;
 }
 
-.theme-toggle.spin {
-  transform: rotate(360deg);
-}
+/* optional small pressed visual */
+.theme-toggle:active { transform: scale(0.98); }
+
 
 /* Better contrast for light mode */
 body.light-mode .nav-links a {
@@ -450,11 +458,12 @@ body.light-mode .cert-list {
 
   
   .carousel-container {
-  position: relative;
+  position: relative;        /* needed so dots can be absolute bottom center */
   width: 100%;
   max-width: 950px;
   margin: 0 auto;
-  overflow: hidden; /* prevents sliding off edges */
+  overflow: visible;         /* allow scaled active card to overflow */
+  padding: 40px 10px;        /* give vertical breathing room so scaled card doesn't clip */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -463,29 +472,24 @@ body.light-mode .cert-list {
 .carousel {
   display: flex;
   align-items: center;
-  justify-content: center;
   transition: transform 0.6s ease-in-out;
   gap: 25px;
-  touch-action: pan-y; /* allows swipe without blocking scroll */
+  touch-action: pan-y;       /* allow vertical scrolling while enabling swipe gestures */
+  will-change: transform;
 }
 
-
+/* center card scale rules remain the same */
 .carousel .project-card {
-  background: rgba(255, 255, 255, 0.05);
   width: 240px;
   height: 320px;
   flex: 0 0 auto;
   border-radius: 15px;
-  text-align: center;
-  transform: scale(0.9);
-  opacity: 0.6;
-  transition: transform 0.4s ease, opacity 0.4s ease, background 0.3s;
+  transform: scale(0.95);
+  opacity: 0.65;
+  transition: transform 0.35s ease, opacity 0.35s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 1;
 }
 
 .carousel .project-card img {
@@ -511,20 +515,10 @@ body.light-mode .cert-list {
 }
 
 /* active (middle) card */
-.carousel .project-card.active {
-  transform: scale(1.1);
-  opacity: 1;
-  z-index: 3;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* ensure adjacent cards fade smoothly */
+.carousel .project-card.active { transform: scale(1.12); opacity: 1; z-index: 3; }
 .carousel .project-card.prev,
-.carousel .project-card.next {
-  opacity: 0.85;
-  transform: scale(0.95);
-  z-index: 2;
-}
+.carousel .project-card.next { transform: scale(0.96); opacity: 0.9; z-index: 2; }
+
 
 /* Make sure arrows float correctly */
 .carousel-arrow {
@@ -559,10 +553,14 @@ body.light-mode .cert-list {
 
 /* Dots */
 .carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
   gap: 10px;
+  z-index: 6;
+  pointer-events: auto;
 }
 
 .carousel-dots span {
@@ -570,14 +568,9 @@ body.light-mode .cert-list {
   height: 10px;
   border-radius: 50%;
   background: #a370ff;
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: opacity 0.25s ease, transform 0.2s ease;
 }
 
-.carousel-dots span.active {
-  opacity: 1;
-}
-
-
-
+.carousel-dots span.active { opacity: 1; transform: scale(1.05); }
