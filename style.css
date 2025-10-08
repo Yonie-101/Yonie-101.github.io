@@ -124,7 +124,11 @@ body.light-mode .logo {
   flex-direction: column;
   cursor: pointer;
   gap: 4px;
+  padding: 6px; 
+  margin-right: 6px; 
+  box-sizing: content-box; 
 }
+
 
 .bar {
   height: 3px;
@@ -308,15 +312,16 @@ body.light-mode footer {
     overflow: visible; /* prevent clipping */
   }
 
-  /* 👇 Fixed hamburger section */
   .hamburger {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 4px;
-    margin-right: 10px; /* space from screen edge */
-    padding: 8px; /* extra space so X icon isn’t cut off */
-  }
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  padding: 10px; /* more room for rotation */
+  margin-right: 14px; /* space from the edge */
+  box-sizing: content-box;
+}
+
 
   .hamburger.active .bar:nth-child(1) {
     transform: rotate(45deg) translateY(8px);
