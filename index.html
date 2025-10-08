@@ -153,92 +153,137 @@
     </footer>
 
   <script>
-    // === Carousel Setup ===
-    const carousel = document.querySelector('.carousel');
-    const cards = document.querySelectorAll('.carousel .project-card');
-    const dots = document.querySelectorAll('.carousel-dots span');
-    const leftArrow = document.querySelector('.carousel-arrow.left');
-    const rightArrow = document.querySelector('.carousel-arrow.right');
+/* ====== Carousel + Dots + Autoplay + Swipe (robust) ====== */
+const carouselEl = document.querySelector('.carousel');
+const containerEl = document.querySelector('.carousel-container');
+const cards = Array.from(document.querySelectorAll('.carousel .project-card'));
+const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
+const leftArrow = document.querySelector('.carousel-arrow.left');
+const rightArrow = document.querySelector('.carousel-arrow.right');
 
-    let currentIndex = 0;
-const projectCards = document.querySelectorAll('.project-card');
-const totalCards = projectCards.length;
+let currentIndex = 0;
+let autoTimer = null;
+const AUTO_DELAY = 4000; // ms
 
-function updateCarousel() {
-  projectCards.forEach((card, index) => {
-    card.classList.remove('active', 'prev', 'next');
-  });
-
-  const prevIndex = (currentIndex - 1 + totalCards) % totalCards;
-  const nextIndex = (currentIndex + 1) % totalCards;
-
-  projectCards[currentIndex].classList.add('active');
-  projectCards[prevIndex].classList.add('prev');
-  projectCards[nextIndex].classList.add('next');
-
-  // keep carousel centered
-  const offset = (projectCards[0].offsetWidth + 25) * -currentIndex;
-  document.querySelector('.carousel').style.transform = `translateX(calc(50% + ${offset}px - ${(projectCards[0].offsetWidth / 2)}px))`;
+// Utility: compute gap (fallback to 25)
+function getGap() {
+  const gap = parseFloat(getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap);
+  return isNaN(gap) ? 25 : gap;
 }
 
-document.querySelector('.carousel-arrow.left').addEventListener('click', () => {
-  currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-  updateCarousel();
+function centerActiveCard(index) {
+  if (!cards.length) return;
+
+  const cardWidth = cards[0].offsetWidth;
+  const gap = getGap();
+  const containerWidth = containerEl.clientWidth;
+
+  // position so that the active card's left is at (containerCenter - cardWidth/2)
+  // offsetFromFirst = index * (cardWidth + gap)
+  const offsetFromFirst = index * (cardWidth + gap);
+  const containerCenter = (containerWidth / 2);
+  const desiredTranslateX = containerCenter - (cardWidth / 2) - offsetFromFirst;
+
+  carouselEl.style.transform = `translateX(${desiredTranslateX}px)`;
+}
+
+function updateClassesAndDots() {
+  const total = cards.length;
+  cards.forEach((c, i) => c.classList.remove('active','prev','next'));
+
+  const prevIndex = (currentIndex - 1 + total) % total;
+  const nextIndex = (currentIndex + 1) % total;
+
+  cards[currentIndex].classList.add('active');
+  cards[prevIndex].classList.add('prev');
+  cards[nextIndex].classList.add('next');
+
+  dots.forEach((d,i) => d.classList.toggle('active', i === currentIndex));
+}
+
+function goTo(index) {
+  currentIndex = (index + cards.length) % cards.length;
+  updateClassesAndDots();
+  centerActiveCard(currentIndex);
+}
+
+function next() { goTo(currentIndex + 1); }
+function prev() { goTo(currentIndex - 1); }
+
+// arrows
+rightArrow.addEventListener('click', () => {
+  next();
+  restartAuto();
+});
+leftArrow.addEventListener('click', () => {
+  prev();
+  restartAuto();
 });
 
-document.querySelector('.carousel-arrow.right').addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % totalCards;
-  updateCarousel();
+// dots click
+dots.forEach((dot, i) => dot.addEventListener('click', () => {
+  goTo(i);
+  restartAuto();
+}));
+
+// auto-play
+function startAuto() {
+  stopAuto();
+  autoTimer = setInterval(() => next(), AUTO_DELAY);
+}
+function stopAuto() {
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+}
+function restartAuto() { stopAuto(); startAuto(); }
+
+// pause on hover
+containerEl.addEventListener('mouseenter', stopAuto);
+containerEl.addEventListener('mouseleave', startAuto);
+
+// swipe (touch) support
+let touchStartX = 0;
+let touchDelta = 0;
+carouselEl.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchDelta = 0;
+});
+carouselEl.addEventListener('touchmove', (e) => {
+  touchDelta = e.touches[0].clientX - touchStartX;
+});
+carouselEl.addEventListener('touchend', () => {
+  if (touchDelta > 50) { prev(); restartAuto(); }
+  else if (touchDelta < -50) { next(); restartAuto(); }
+  touchStartX = 0; touchDelta = 0;
 });
 
-// enable swipe on mobile
-let startX = 0;
-document.querySelector('.carousel').addEventListener('touchstart', (e) => {
-  startX = e.touches[0].clientX;
-});
-
-document.querySelector('.carousel').addEventListener('touchend', (e) => {
-  const endX = e.changedTouches[0].clientX;
-  if (startX - endX > 50) {
-    // swipe left → next
-    currentIndex = (currentIndex + 1) % totalCards;
-    updateCarousel();
-  } else if (endX - startX > 50) {
-    // swipe right → prev
-    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-    updateCarousel();
-  }
-});
+// handle resize: re-center
+window.addEventListener('resize', () => centerActiveCard(currentIndex));
 
 // initialize
-updateCarousel();
+goTo(0);
+startAuto();
 
-    // === Hamburger Menu ===
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-    hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-      hamburger.classList.toggle('active');
-    });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        hamburger.classList.remove('active');
-      });
-    });
+/* ====== Theme toggle (moon/sun) — non-jiggly ====== */
+const toggleBtn = document.getElementById('theme-toggle');
+const bodyEl = document.body;
+let moonRotation = 0;
 
-    // === Theme Toggle ===
-    const toggleBtn = document.getElementById('theme-toggle');
-    const body = document.body;
+toggleBtn.addEventListener('click', () => {
+  // rotate smoothly (cumulative), but button size is fixed so no layout shift
+  moonRotation += 360;
+  toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
+  // toggle theme class on body
+  bodyEl.classList.toggle('light-mode');
 
-    toggleBtn.addEventListener('click', () => {
-      body.classList.toggle('light-mode');
-      toggleBtn.classList.add('spin');
-      setTimeout(() => toggleBtn.classList.remove('spin'), 500);
-      toggleBtn.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
-    });
-  </script>
+  // change displayed emoji (optional); width won't change due to fixed button width
+  toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
+
+  // small focus style removal: keep UX smooth
+  toggleBtn.blur();
+});
+</script>
+
 </body>
 </html>
 
