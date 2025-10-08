@@ -55,6 +55,8 @@
   <section id="projects" class="section">
     <h2>Major Projects</h2>
     <div class="carousel-container">
+  <button class="carousel-arrow left">❮</button>
+
   <div class="carousel">
     <div class="project-card active">
       <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
@@ -77,7 +79,16 @@
       <a href="projects/visualnovel.html" class="btn">See More</a>
     </div>
   </div>
+
+  <button class="carousel-arrow right">❯</button>
+
+  <div class="carousel-dots">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
+
 
   </section>
 
@@ -143,15 +154,46 @@
 
   <script>
 
-      const cards = document.querySelectorAll('.carousel .project-card');
-  let index = 0;
+      const carousel = document.querySelector('.carousel');
+const cards = document.querySelectorAll('.carousel .project-card');
+const dots = document.querySelectorAll('.carousel-dots span');
+const leftArrow = document.querySelector('.carousel-arrow.left');
+const rightArrow = document.querySelector('.carousel-arrow.right');
 
-  setInterval(() => {
-    cards[index].classList.remove('active');
-    index = (index + 1) % cards.length;
-    cards[index].classList.add('active');
-    document.querySelector('.carousel').style.transform = `translateX(-${index * 270}px)`;
-  }, 3500);
+let index = 0;
+
+function updateCarousel() {
+  cards.forEach((card, i) => {
+    card.classList.toggle('active', i === index);
+  });
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+
+  const offset = -index * 300;
+  carousel.style.transform = `translateX(${offset}px)`;
+}
+
+function nextSlide() {
+  index = (index + 1) % cards.length;
+  updateCarousel();
+}
+
+function prevSlide() {
+  index = (index - 1 + cards.length) % cards.length;
+  updateCarousel();
+}
+
+rightArrow.addEventListener('click', nextSlide);
+leftArrow.addEventListener('click', prevSlide);
+dots.forEach((dot, i) => dot.addEventListener('click', () => {
+  index = i;
+  updateCarousel();
+}));
+
+setInterval(nextSlide, 4000);
+updateCarousel();
+
 
     // Hamburger menu toggle
     const hamburger = document.getElementById('hamburger');
