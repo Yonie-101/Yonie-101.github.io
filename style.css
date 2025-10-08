@@ -451,41 +451,47 @@ body.light-mode .cert-list {
   transition: transform 0.6s ease-in-out;
 }
 
-/* 👇 Scoped to carousel only */
 .carousel .project-card {
   background: rgba(255, 255, 255, 0.05);
-  min-width: 240px;
-  max-width: 260px;
-  height: 320px;
+  width: 240px;
+  height: 300px;
   flex: 0 0 auto;
   border-radius: 15px;
   text-align: center;
-  transform: scale(0.9);
-  opacity: 0.6;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: scale(0.95);
+  opacity: 0.7;
+  transition: transform 0.35s ease, opacity 0.35s ease, background 0.3s;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .carousel .project-card img {
   width: 100%;
-  height: 160px;
+  height: 150px;
   object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px;
+  flex-shrink: 0;
+  display: block;
 }
 
 .carousel .project-card p {
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: #d1c2f0;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  color: #d1c2f0;
 }
 
-/* 👇 Only the middle active one enlarges */
+/* Active (center) card looks more subtle now */
 .carousel .project-card.active {
-  transform: scale(1.2);
+  transform: scale(1.05);
   opacity: 1;
   z-index: 2;
   background: rgba(255, 255, 255, 0.08);
