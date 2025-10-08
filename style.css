@@ -52,9 +52,6 @@ body.light-mode header {
   overflow-x: hidden; /* prevent horizontal scroll */
 }
 
-header {
-  overflow-x: hidden; /* ensures header never overflows */
-}
 
 
 
@@ -583,5 +580,4 @@ body.light-mode .cert-list {
 }
 
 
-}
 
