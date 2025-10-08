@@ -185,9 +185,41 @@ body.light-mode header {
 
 .cert-card {
   background: rgba(255, 255, 255, 0.05);
-  padding: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.cert-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cert-card img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
   border-radius: 10px;
 }
+
+.cert-card p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #d1c2f0;
+}
+
+body.light-mode .cert-card {
+  background: rgba(100, 0, 200, 0.05);
+  color: #1a0030;
+}
+
+body.light-mode .cert-card p {
+  color: #3b0066;
+}
+
 
 /* Footer */
 footer {
