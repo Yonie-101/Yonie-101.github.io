@@ -150,52 +150,66 @@
 
   <footer>
     <p>© 2025 Lyeonnie Muñoz. Built with 💜 using HTML, CSS, and JS.</p>
-  </footer>
+    </footer>
 
   <script>
+    // === Carousel Setup ===
+    const carousel = document.querySelector('.carousel');
+    const cards = document.querySelectorAll('.carousel .project-card');
+    const dots = document.querySelectorAll('.carousel-dots span');
+    const leftArrow = document.querySelector('.carousel-arrow.left');
+    const rightArrow = document.querySelector('.carousel-arrow.right');
 
-      const carousel = document.querySelector('.carousel');
-const cards = document.querySelectorAll('.carousel .project-card');
-const dots = document.querySelectorAll('.carousel-dots span');
-const leftArrow = document.querySelector('.carousel-arrow.left');
-const rightArrow = document.querySelector('.carousel-arrow.right');
+    let index = 0;
 
-let index = 0;
+    function updateCarousel() {
+      cards.forEach((card, i) => {
+        card.classList.toggle('active', i === index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
 
-function updateCarousel() {
-  cards.forEach((card, i) => {
-    card.classList.toggle('active', i === index);
-  });
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === index);
-  });
+      const offset = -index * 280; // adjust for card width
+      carousel.style.transform = `translateX(${offset}px)`;
+    }
 
-  const offset = -index * 300;
-  carousel.style.transform = `translateX(${offset}px)`;
-}
+    function nextSlide() {
+      index = (index + 1) % cards.length;
+      updateCarousel();
+    }
 
-function nextSlide() {
-  index = (index + 1) % cards.length;
-  updateCarousel();
-}
+    function prevSlide() {
+      index = (index - 1 + cards.length) % cards.length;
+      updateCarousel();
+    }
 
-function prevSlide() {
-  index = (index - 1 + cards.length) % cards.length;
-  updateCarousel();
-}
+    rightArrow.addEventListener('click', nextSlide);
+    leftArrow.addEventListener('click', prevSlide);
+    dots.forEach((dot, i) => dot.addEventListener('click', () => {
+      index = i;
+      updateCarousel();
+    }));
 
-rightArrow.addEventListener('click', nextSlide);
-leftArrow.addEventListener('click', prevSlide);
-dots.forEach((dot, i) => dot.addEventListener('click', () => {
-  index = i;
-  updateCarousel();
-}));
+    // Auto-slide every 4 seconds
+    let autoSlide = setInterval(nextSlide, 4000);
 
-setInterval(nextSlide, 4000);
-updateCarousel();
+    // Pause on hover
+    document.querySelector('.carousel-container').addEventListener('mouseenter', () => clearInterval(autoSlide));
+    document.querySelector('.carousel-container').addEventListener('mouseleave', () => autoSlide = setInterval(nextSlide, 4000));
 
+    // Swipe (mobile)
+    let startX = 0;
+    carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    carousel.addEventListener('touchend', e => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff > 50) prevSlide();
+      if (diff < -50) nextSlide();
+    });
 
-    // Hamburger menu toggle
+    updateCarousel();
+
+    // === Hamburger Menu ===
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
     hamburger.addEventListener('click', () => {
@@ -204,23 +218,23 @@ updateCarousel();
     });
 
     document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    hamburger.classList.remove('active');
-  });
-});
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('active');
+      });
+    });
 
-
-    // Theme toggle
+    // === Theme Toggle ===
     const toggleBtn = document.getElementById('theme-toggle');
-  const body = document.body;
-  
-  toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('light-mode');
-    toggleBtn.classList.add('spin');
-    setTimeout(() => toggleBtn.classList.remove('spin'), 500);
-    toggleBtn.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
-  });
+    const body = document.body;
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      toggleBtn.classList.add('spin');
+      setTimeout(() => toggleBtn.classList.remove('spin'), 500);
+      toggleBtn.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+    });
   </script>
 </body>
 </html>
+
