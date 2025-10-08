@@ -8,23 +8,25 @@
 </head>
 <body>
   <header>
-  <nav class="navbar">
-    <div class="logo">Lyeonnie</div>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="hamburger" id="hamburger">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-    </div>
-  </nav>
-</header>
-
+    <nav class="navbar">
+      <div class="logo">Lyeonnie</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+        <div class="hamburger" id="hamburger">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </nav>
+  </header>
 
   <section id="home" class="hero">
     <h1>Hi, I’m <span class="accent">Lyeonnie Aquisha G. Muñoz</span></h1>
@@ -66,15 +68,15 @@
 
   <section id="certifications" class="section">
     <h2>Certifications</h2>
-    <ul class="cert-list">
-      <li>CCNA: Enterprise Networking, Security, and Automation</li>
-      <li>CCNA: Switching, Routing, and Wireless Essentials</li>
-      <li>CCNAv7: Introduction to Networks</li>
-      <li>CISDP - Certified Information Security and Data Privacy Practitioner</li>
-      <li>Certified Data Center Technician (FEU)</li>
-      <li>DICT: Cloud Computing & Web Development</li>
-      <li>CompTIA ITF+ (FC0-U61)</li>
-    </ul>
+    <div class="cert-grid">
+      <div class="cert-card">CCNA: Enterprise Networking, Security, and Automation</div>
+      <div class="cert-card">CCNA: Switching, Routing, and Wireless Essentials</div>
+      <div class="cert-card">CCNAv7: Introduction to Networks</div>
+      <div class="cert-card">CISDP - Certified Information Security and Data Privacy Practitioner</div>
+      <div class="cert-card">Certified Data Center Technician (FEU)</div>
+      <div class="cert-card">DICT: Cloud Computing & Web Development</div>
+      <div class="cert-card">CompTIA ITF+ (FC0-U61)</div>
+    </div>
   </section>
 
   <section id="contact" class="section">
@@ -89,14 +91,20 @@
   </footer>
 
   <script>
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      hamburger.classList.toggle('active');
+    });
 
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-    hamburger.classList.toggle('active');
-  });
-</script>
-
+    // Theme toggle
+    const toggleBtn = document.getElementById('theme-toggle');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      toggleBtn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+    });
+  </script>
 </body>
 </html>
