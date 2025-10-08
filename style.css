@@ -46,10 +46,16 @@ body.light-mode header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 12px; /* reduced from 20px */
   box-sizing: border-box;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* prevent line breaking */
+  overflow-x: hidden; /* prevent horizontal scroll */
 }
+
+header {
+  overflow-x: hidden; /* ensures header never overflows */
+}
+
 
 
 .nav-right {
@@ -451,19 +457,21 @@ body.light-mode .cert-list {
   width: 100%;
   max-width: 950px;
   margin: 0 auto;
-  overflow: visible; /* prevents clipping of scaled cards */
-  padding: 50px 0;   /* more breathing room top & bottom */
+  overflow: hidden; /* prevents sliding off edges */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .carousel {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 25px;
+  justify-content: center;
   transition: transform 0.6s ease-in-out;
-  will-change: transform;
-  scroll-behavior: smooth;
+  gap: 25px;
+  touch-action: pan-y; /* allows swipe without blocking scroll */
 }
+
 
 .carousel .project-card {
   background: rgba(255, 255, 255, 0.05);
