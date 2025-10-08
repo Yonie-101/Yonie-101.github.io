@@ -8,17 +8,23 @@
 </head>
 <body>
   <header>
-    <nav class="navbar">
-      <div class="logo">Lyeonnie</div>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#certifications">Certifications</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav class="navbar">
+    <div class="logo">Lyeonnie</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </nav>
+</header>
+
 
   <section id="home" class="hero">
     <h1>Hi, I’m <span class="accent">Lyeonnie Aquisha G. Muñoz</span></h1>
@@ -81,5 +87,16 @@
   <footer>
     <p>© 2025 Lyeonnie Muñoz. Built with 💜 using HTML, CSS, and JS.</p>
   </footer>
+
+  <script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active');
+  });
+</script>
+
 </body>
 </html>
