@@ -349,24 +349,40 @@ body.light-mode footer {
 }
 
 /* ========== Responsive Design ========== */
-@media (max-width: 768px) {
-  .nav-links {
-    position: fixed;
-    top: var(--header-height); /* align with the header height variable */
-    right: -260px;
-    background: rgba(20, 0, 40, 0.95);
-    flex-direction: column;
-    align-items: flex-start;
-    width: 230px;
-    padding: 20px;
-    border-radius: 10px 0 0 10px;
-    transition: right 0.3s ease;
-    z-index: 9999; /* Ensure above header */
-  }
+/* mobile menu: hidden by default using transform (no peek) */
+.nav-links {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;                                /* anchor to right edge */
+  height: calc(100vh - var(--header-height));
+  width: 230px;
+  background: rgba(20, 0, 40, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -6px 8px 30px rgba(0,0,0,0.5);
+  transform: translateX(110%);             /* move fully off-screen (no peek) */
+  transition: transform 0.32s cubic-bezier(.2,.9,.28,1), visibility 0.32s;
+  visibility: hidden;                      /* not visible / accessible */
+  pointer-events: none;                    /* ignore clicks when closed */
+  z-index: 9999;
+  box-sizing: border-box;
+  overflow-y: auto;                        /* allow vertical scroll if menu tall */
+}
 
-  .nav-links.open {
-    right: 15px; /* more visible, not cut off */
-  }
+/* open state: slide in and become interactive */
+.nav-links.open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* small tweak to ensure nav links inside don't try to center / overflow */
+.nav-links li { width: 100%; }
+.nav-links a { display: block; padding: 8px 4px; width: 100%; }
+
 
   header {
     overflow: visible; /* prevent clipping */
