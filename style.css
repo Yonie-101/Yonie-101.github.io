@@ -21,7 +21,7 @@ body.light-mode .accent {
 }
 
 body.light-mode .nav-links {
-  background: rgba(230, 220, 255, 0.95);
+  background: transparent;
 }
 
 
@@ -87,6 +87,10 @@ body.light-mode header {
   height: 35px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+body.light-mode .logo {
+  color: #3b0066; /* same as .nav-links a in light mode */
 }
 
 
@@ -284,25 +288,31 @@ body.light-mode footer {
 @media (max-width: 768px) {
   .nav-links {
     position: fixed;
-    top: 70px;
-    right: -250px; /* CHANGED: from left:-250px */
+    top: 75px;
+    right: -260px;
     background: rgba(20, 0, 40, 0.95);
     flex-direction: column;
     align-items: flex-start;
-    width: 220px;
+    width: 230px;
     padding: 20px;
-    border-radius: 10px 0 0 10px; /* flipped corner roundness */
-    transition: right 0.3s ease; /* CHANGED */
-    z-index: 999;
+    border-radius: 10px 0 0 10px;
+    transition: right 0.3s ease;
+    z-index: 9999; /* Increased to ensure above header */
   }
 
   .nav-links.open {
-    right: 10px; /* CHANGED: make it slide from right edge */
+    right: 15px; /* more visible, not cut off */
+  }
+
+  header {
+    overflow: visible; /* ensure dropdown isn’t clipped */
   }
 
   .hamburger {
     display: flex;
+    margin-right: 10px; /* gives breathing space from right edge */
   }
+  
 
   .hamburger.active .bar:nth-child(1) {
   transform: rotate(45deg) translateY(8px);
