@@ -282,6 +282,28 @@ toggleBtn.addEventListener('click', () => {
   // small focus style removal: keep UX smooth
   toggleBtn.blur();
 });
+
+    /* ===== HAMBURGER / MOBILE MENU ===== */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', (e) => {
+    navLinks.classList.toggle('open');    // CSS uses .nav-links.open { right:15px; } to slide in
+    hamburger.classList.toggle('active'); // for X animation
+  });
+
+  // close mobile menu when a nav link is clicked
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
+  });
+}
+
+
+    
 </script>
 
 </body>
