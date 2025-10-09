@@ -352,25 +352,22 @@ body.light-mode footer {
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
   .nav-links {
-  position: fixed;
-  top: var(--header-height);
-  right: -260px;
-  background: rgba(20, 0, 40, 0.95);
-  flex-direction: column;
-  align-items: flex-start;
-  width: 230px;
-  padding: 20px;
-  border-radius: 10px 0 0 10px;
-  transition: right 0.3s ease;
-  z-index: 9999;
-}
+    position: fixed;
+    top: var(--header-height); /* align with the header height variable */
+    right: -260px;
+    background: rgba(20, 0, 40, 0.95);
+    flex-direction: column;
+    align-items: flex-start;
+    width: 230px;
+    padding: 20px;
+    border-radius: 10px 0 0 10px;
+    transition: right 0.3s ease;
+    z-index: 9999; /* Ensure above header */
+  }
 
-.nav-links.open {
-  right: 15px;
-}
-
-
-
+  .nav-links.open {
+    right: 15px; /* more visible, not cut off */
+  }
 
   header {
     overflow: visible; /* prevent clipping */
@@ -427,34 +424,13 @@ body.light-mode .hamburger.active .bar {
     background: rgba(230, 220, 255, 0.95);
   }
 
-  /* One visible project at a time */
-  .carousel {
-    gap: 15px;
-    justify-content: center;
-  }
-
   .carousel .project-card {
-    width: 85vw; /* full width minus side padding */
-    height: auto;
-    flex: 0 0 85vw;
-    transform: scale(1);
-    opacity: 1;
+    width: 200px;
+    height: 260px;
   }
 
   .carousel .project-card img {
-    height: 180px;
-  }
-
-  /* Optional: hide prev/next slightly smaller for mobile */
-  .carousel-arrow {
-    width: 38px;
-    height: 38px;
-    font-size: 1.5rem;
-  }
-
-  .carousel-dots {
-    bottom: 8px;
-    gap: 8px;
+    height: 130px;
   }
 
   /* ensure hamburger & theme are always visible on small screens */
@@ -647,7 +623,3 @@ body.light-mode .cert-list {
 }
 
 .carousel-dots span.active { opacity: 1; transform: scale(1.05); }
-
-
-
-
