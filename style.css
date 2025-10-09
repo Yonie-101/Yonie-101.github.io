@@ -232,59 +232,71 @@ body.light-mode .contact-form input, body.light-mode .contact-form textarea { ba
 body.light-mode .carousel-container::before { left:0; background: linear-gradient(to right, rgba(250,246,255,1), rgba(250,246,255,0)); }
 body.light-mode .carousel-container::after { right:0; background: linear-gradient(to left, rgba(250,246,255,1), rgba(250,246,255,0)); }
 
+/* --- UPDATED CAROUSEL CODE STARTS HERE --- */
 .carousel {
-  display:flex;
-  align-items:center;
-  gap:var(--card-gap);
-  justify-content:center;
-  transition: transform .55s cubic-bezier(.22,.9,.28,1);
-  touch-action: pan-y;
+  display: flex;
+  align-items: center;
+  gap: var(--card-gap);
+  justify-content: center;
   will-change: transform;
-  transform: translate3d(0,0,0);
-  opacity: 0;
-  transition-property: transform, opacity;
-  transition-duration: .45s, .25s;
+  transition: transform .55s cubic-bezier(.22,.9,.28,1);
 }
 
-/* show the track as soon as inline style (transform) is applied by JS */
-.carousel[style] {
-  opacity: 1;
-}
-
+/* Center the active card visually, fade others smoothly */
 .carousel .project-card {
   width: 320px;
-  flex: 0 0 auto;
+  flex: 0 0 320px;
   border-radius: 15px;
-  transform: scale(.95);
-  opacity: .65;
-  transition: transform .35s ease, opacity .35s ease;
+  transform: scale(.92);
+  opacity: .58;
+  transition: transform .35s cubic-bezier(.22,.9,.28,1), opacity .35s cubic-bezier(.22,.9,.28,1);
   overflow: visible;
-  display:flex;
-  flex-direction:column;
-  box-sizing:border-box;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   padding-bottom: 16px;
   min-height: 380px;
+  box-shadow: 0 2px 24px 0 rgba(80,30,120,0.08);
 }
+
+.carousel .project-card.active {
+  transform: scale(1.19);
+  opacity: 1;
+  z-index: 3;
+  box-shadow: 0 4px 30px 0 rgba(160,112,255,0.18);
+}
+
+.carousel .project-card.prev,
+.carousel .project-card.next {
+  transform: scale(.98);
+  opacity: .85;
+  z-index: 2;
+}
+
+.carousel .project-card:not(.active):not(.prev):not(.next) {
+  opacity: .38;
+  transform: scale(.92);
+  z-index: 1;
+}
+
 .img-wrap {
-  width:100%;
-  height:220px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  width: 100%;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
 }
 .img-wrap img {
-  max-width:100%;
-  max-height:100%;
-  object-fit:contain;
-  display:block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
 }
-.carousel .project-card h3 { font-size:1.05rem; margin:12px 0 6px; text-align:center; }
-.carousel .project-card p { padding:0 10px; margin:0 0 12px; color:#d1c2f0; text-align:center; }
-.carousel .project-card.active { transform: scale(1.12); opacity: 1; z-index:3; }
-.carousel .project-card.prev, .carousel .project-card.next { transform: scale(.96); opacity:.9; z-index:2; }
+.carousel .project-card h3 { font-size: 1.05rem; margin: 12px 0 6px; text-align: center; }
+.carousel .project-card p { padding: 0 10px; margin: 0 0 12px; color: #d1c2f0; text-align: center; }
 
 /* arrows */
 .carousel-arrow {
@@ -307,11 +319,10 @@ body.light-mode .carousel-container::after { right:0; background: linear-gradien
 .carousel-arrow:hover { background: rgba(160,120,255,0.36); }
 .carousel-arrow.left { left:8px; }
 .carousel-arrow.right { right:8px; }
-
-/* darker arrows in light mode for readability */
 body.light-mode .carousel-arrow { background: rgba(0,0,0,0.12); color:#3b0066; }
 body.light-mode .carousel-arrow:hover { background: rgba(0,0,0,0.18); }
 
+/* dots */
 .carousel-dots {
   position:absolute;
   bottom:18px;
@@ -324,48 +335,27 @@ body.light-mode .carousel-arrow:hover { background: rgba(0,0,0,0.18); }
 .carousel-dots span { width:10px; height:10px; border-radius:50%; background:#a370ff; opacity:.35; cursor:pointer; transition:opacity .25s, transform .2s; }
 .carousel-dots span.active { opacity:1; transform:scale(1.05); }
 
+/* Responsive for mobile */
 @media (max-width:768px) {
-  .nav-links {
-    position:fixed;
-    top:var(--header-height);
-    right:-100%;
-    background: rgba(20,0,40,0.95);
-    flex-direction:column;
-    align-items:flex-start;
-    width:250px;
-    padding:20px;
-    border-radius:10px 0 0 10px;
-    transition:right .35s ease;
-    z-index:9999;
-  }
-  .nav-links.open { right:0; }
-  header { overflow: visible; }
-  .hamburger { display:block; }
-  .hamburger.active .bar:nth-child(1) { transform: rotate(45deg) translateY(8px); transform-origin:center; }
-  .hamburger.active .bar:nth-child(2) { opacity:0; }
-  .hamburger.active .bar:nth-child(3) { transform: rotate(-45deg) translateY(-8px); transform-origin:center; }
-  .nav-right { gap:10px; }
-  .theme-toggle { margin-right:0; }
-  body.light-mode .nav-links { background: rgba(230,220,255,0.95); }
-
   .carousel {
-    gap:15px;
-    justify-content:flex-start;
-    padding-left: calc((100% - 85vw) / 2);
+    gap: 15px;
+    justify-content: center;
+    padding-left: 0;
     will-change: transform;
   }
   .carousel .project-card {
     width: 85vw;
     flex: 0 0 85vw;
-    margin-right:15px;
-    transform: scale(1);
-    opacity:1;
+    margin-right: 0;
     min-height: 520px;
     padding-bottom: 20px;
   }
-  .img-wrap { height:260px; }
+  .img-wrap { height: 260px; }
   .carousel-container::before, .carousel-container::after { width:12%; }
   .carousel-arrow { width:42px; height:42px; font-size:1.4rem; line-height:42px;}
   .carousel-dots { bottom:8px; gap:8px; }
   .contact-form { width: calc(100% - 32px); padding:18px; }
 }
+/* --- UPDATED CAROUSEL CODE ENDS HERE --- */
+
+/* All other code below remains unchanged */
