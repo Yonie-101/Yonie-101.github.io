@@ -431,23 +431,27 @@ body.light-mode .hamburger.active .bar {
     background: rgba(230, 220, 255, 0.95);
   }
 
-  /* One visible project at a time */
+  /* One visible project at a time (mobile) */
   .carousel {
     gap: 15px;
-    justify-content: center;
+    justify-content: flex-start; /* let JS translate the carousel; don't center via flex */
+    padding-left: calc((100% - 85vw) / 2); /* visually align the first card center with container */
+    will-change: transform;
   }
 
   .carousel .project-card {
-  width: 85vw; /* full width */
-  flex: 0 0 85vw; /* ensures only one fits per view */
-}
-
+    width: 85vw;          /* card fills most of viewport */
+    flex: 0 0 85vw;       /* only one card per view */
+    margin-right: 15px;   /* spacing between cards (matches gap) */
+    transform: scale(1);
+    opacity: 1;
+  }
 
   .carousel .project-card img {
     height: 180px;
   }
 
-  /* Optional: hide prev/next slightly smaller for mobile */
+  /* Slightly smaller arrow buttons on mobile */
   .carousel-arrow {
     width: 38px;
     height: 38px;
@@ -458,7 +462,6 @@ body.light-mode .hamburger.active .bar {
     bottom: 8px;
     gap: 8px;
   }
-
   /* ensure hamburger & theme are always visible on small screens */
 .nav-actions { display:flex; gap:8px; align-items:center; z-index:1200; }
 
