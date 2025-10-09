@@ -354,20 +354,21 @@ body.light-mode footer {
   .nav-links {
   position: fixed;
   top: var(--header-height);
-  right: -100%; /* fully off-screen */
+  right: -260px;
   background: rgba(20, 0, 40, 0.95);
   flex-direction: column;
   align-items: flex-start;
   width: 230px;
   padding: 20px;
   border-radius: 10px 0 0 10px;
-  transition: right 0.35s ease;
+  transition: right 0.3s ease;
   z-index: 9999;
 }
 
 .nav-links.open {
-  right: 0; /* slides fully into view */
+  right: 15px;
 }
+
 
 
 
