@@ -163,12 +163,11 @@
   const rightArrow = document.querySelector('.carousel-arrow.right');
   if (!carouselEl || !containerEl) return;
 
-  // Remove clones
   Array.from(carouselEl.querySelectorAll('[data-clone]')).forEach(n => n.remove());
   const originals = Array.from(carouselEl.querySelectorAll('.project-card'));
   if (!originals.length) return;
 
-  // Add clones for infinite loop
+  // Forda infinite loop
   const firstClone = originals[0].cloneNode(true);
   const lastClone = originals[originals.length - 1].cloneNode(true);
   firstClone.setAttribute('data-clone', 'first');
@@ -185,7 +184,6 @@
     carouselEl.style.transition = enable ? 'transform .55s cubic-bezier(.22,.9,.28,1)' : 'none';
   }
 
-  // Fix: Use card's offsetLeft relative to carousel, and center in container
   function calcTranslateForIndex(idx) {
     const card = cards[idx];
     if (!card) return 0;
@@ -235,7 +233,6 @@ carouselEl.addEventListener('transitionend', () => {
   const current = cards[index];
   if (!current) return;
 
-  // If landed on a clone, snap to real card instantly (no transition)
   if (current.dataset.clone === 'first') {
     setTransition(false);
     index = 1;
@@ -243,8 +240,8 @@ carouselEl.addEventListener('transitionend', () => {
     updateClasses();
     requestAnimationFrame(() => {
       setTransition(true);
-      isTransitioning = false; // Allow next transition
-      restartAuto(); // Reset timer to prevent drift
+      isTransitioning = false; 
+      restartAuto(); 
     });
   } else if (current.dataset.clone === 'last') {
     setTransition(false);
@@ -323,7 +320,6 @@ carouselEl.addEventListener('transitionend', () => {
   imagesLoadedAndCenter();
   startAuto();
 
-  // --- rest of nav/theme JS unchanged ---
   const toggleBtn = document.getElementById('theme-toggle');
   const bodyEl = document.body;
   let moonRotation = 0;
