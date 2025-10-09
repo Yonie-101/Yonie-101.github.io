@@ -153,28 +153,24 @@
     const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
     const leftArrow = document.querySelector('.carousel-arrow.left');
     const rightArrow = document.querySelector('.carousel-arrow.right');
+
     let currentIndex = 0;
     let autoTimer = null;
     const AUTO_DELAY = 4000;
-
-    function getGap() {
-      if (!carouselEl) return 25;
-      const computed = getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap;
-      const gap = parseFloat(computed);
-      return isNaN(gap) ? 25 : gap;
-    }
 
     function centerActiveCard(index) {
       if (!cards.length || !carouselEl || !containerEl) return;
       const card = cards[index];
       const cardWidth = card.offsetWidth;
       const containerWidth = containerEl.clientWidth;
-      const cardOffsetLeft = card.offsetLeft;
-      const totalWidth = carouselEl.scrollWidth;
-      // desired translate so the card center aligns with container center
-      let desired = (containerWidth / 2) - (cardOffsetLeft + cardWidth / 2);
 
-      // if total track is smaller than container, center the whole track
+      // card.offsetLeft is relative to carouselEl
+      const cardOffset = card.offsetLeft;
+
+      // desired translate so the card center aligns with container center
+      let desired = (containerWidth / 2) - (cardOffset + cardWidth / 2);
+
+      const totalWidth = carouselEl.scrollWidth;
       if (totalWidth <= containerWidth) {
         desired = (containerWidth - totalWidth) / 2;
       } else {
@@ -219,6 +215,7 @@
       containerEl.addEventListener('mouseleave', startAuto);
     }
 
+    // touch/swipe
     let touchStartX = 0;
     let touchDelta = 0;
     if (carouselEl) {
@@ -233,6 +230,7 @@
 
     window.addEventListener('resize', () => centerActiveCard(currentIndex));
 
+    // ensure images loaded before first centering
     function imagesLoadedAndCenter() {
       const imgs = Array.from(document.querySelectorAll('.carousel .project-card img'));
       if (!imgs.length) { centerActiveCard(currentIndex); return; }
@@ -254,7 +252,7 @@
       centerActiveCard(currentIndex);
     });
 
-    /* theme toggle */
+    // theme toggle
     const toggleBtn = document.getElementById('theme-toggle');
     const bodyEl = document.body;
     let moonRotation = 0;
@@ -264,13 +262,12 @@
         toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
         bodyEl.classList.toggle('light-mode');
         toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
-        // re-center (fade backgrounds etc need time)
         setTimeout(() => centerActiveCard(currentIndex), 120);
         toggleBtn.blur();
       });
     }
 
-    /* hamburger & nav smooth scroll */
+    // hamburger & smooth nav scrolling
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
@@ -296,9 +293,7 @@
           if (href && href.startsWith('#')) {
             const id = href.slice(1);
             const target = document.getElementById(id);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
           setMenuOpen(false);
         });
