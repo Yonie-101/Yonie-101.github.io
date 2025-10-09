@@ -229,20 +229,21 @@
   cards = Array.from(carouselEl.children);
   const current = cards[index];
   if (!current) return;
+
   // If landed on a clone, snap to real card instantly (no transition)
   if (current.dataset.clone === 'first') {
-    setTransition(false); // Disable transition for snap
+    setTransition(false); // turn off animation
     index = 1;
-    applyTranslate(index, false);
+    applyTranslate(index, false); // snap to real card
     updateClasses();
-    // Re-enable transition for future moves
-    setTimeout(() => setTransition(true), 24);
+    // Ensure re-enabling transition happens on next frame
+    requestAnimationFrame(() => setTransition(true));
   } else if (current.dataset.clone === 'last') {
-    setTransition(false); // Disable transition for snap
+    setTransition(false);
     index = originals.length;
     applyTranslate(index, false);
     updateClasses();
-    setTimeout(() => setTransition(true), 24);
+    requestAnimationFrame(() => setTransition(true));
   }
 });
 
