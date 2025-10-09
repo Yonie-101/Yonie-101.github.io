@@ -354,7 +354,7 @@ body.light-mode footer {
   .nav-links {
   position: fixed;
   top: var(--header-height);
-  right: -260px; /* <-- hides it fully, no peeking */
+  right: -150px; /* <-- hides it fully, no peeking */
   background: rgba(20, 0, 40, 0.95);
   flex-direction: column;
   align-items: flex-start;
@@ -366,7 +366,7 @@ body.light-mode footer {
 }
 
 .nav-links.open {
-  right: 15px; /* <-- gives small visible offset, neat look */
+  right: 0px; /* <-- gives small visible offset, neat look */
 }
 
 
