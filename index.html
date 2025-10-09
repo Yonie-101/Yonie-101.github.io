@@ -217,33 +217,48 @@
     }
   }
 
-  function toIndex(newIndex, snap = false) {
-    index = newIndex;
-    applyTranslate(index, !snap);
-    updateClasses();
-  }
-  function next() { toIndex(index + 1); }
-  function prev() { toIndex(index - 1); }
+  let isTransitioning = false;
 
-  carouselEl.addEventListener('transitionend', () => {
+function toIndex(newIndex, snap = false) {
+  if (isTransitioning) return; // Prevent overlapping transitions
+  isTransitioning = true;
+  index = newIndex;
+  applyTranslate(index, !snap);
+  updateClasses();
+  if (snap) isTransitioning = false;
+}
+function next() { toIndex(index + 1); }
+function prev() { toIndex(index - 1); }
+
+carouselEl.addEventListener('transitionend', () => {
   cards = Array.from(carouselEl.children);
   const current = cards[index];
   if (!current) return;
 
   // If landed on a clone, snap to real card instantly (no transition)
   if (current.dataset.clone === 'first') {
-    setTransition(false); // turn off animation
+    setTransition(false);
     index = 1;
-    applyTranslate(index, false); // snap to real card
+    applyTranslate(index, false);
     updateClasses();
-    // Ensure re-enabling transition happens on next frame
-    requestAnimationFrame(() => setTransition(true));
+    requestAnimationFrame(() => {
+      setTransition(true);
+      isTransitioning = false; // Allow next transition
+      restartAuto(); // Reset timer to prevent drift
+    });
   } else if (current.dataset.clone === 'last') {
     setTransition(false);
     index = originals.length;
     applyTranslate(index, false);
     updateClasses();
-    requestAnimationFrame(() => setTransition(true));
+    requestAnimationFrame(() => {
+      setTransition(true);
+      isTransitioning = false;
+      restartAuto();
+    });
+  } else {
+    isTransitioning = false;
+    restartAuto();
   }
 });
 
