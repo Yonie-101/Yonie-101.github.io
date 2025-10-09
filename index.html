@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,31 +9,30 @@
 <body>
   <header>
     <nav class="navbar">
-<div class="logo">
-  <img src="assets/logo-placeholder.png" alt="YeonWorks Logo" class="logo-img" />
-  <span>YeonWorks</span>
-</div>
-
-  <div class="nav-right">
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-
-    <div class="nav-actions">
-      <button id="theme-toggle" class="theme-toggle">🌙</button>
-      <div class="hamburger" id="hamburger">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+      <div class="logo">
+        <img src="assets/logo-placeholder.png" alt="YeonWorks Logo" class="logo-img" />
+        <span>YeonWorks</span>
       </div>
-    </div>
-  </div>
-</nav>
 
+      <div class="nav-right">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#certifications">Certifications</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+          <button id="hamburger" class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
   </header>
 
   <section id="home" class="hero">
@@ -56,256 +54,279 @@
   <section id="projects" class="section">
     <h2>Major Projects</h2>
     <div class="carousel-container">
-  <button class="carousel-arrow left">❮</button>
+      <button class="carousel-arrow left" aria-label="Previous">❮</button>
 
-  <div class="carousel">
-    <div class="project-card active">
-      <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
-      <h3>MarikinaGo App</h3>
-      <p>Tourism app with mapping and booking features built with Flutter & Firebase.</p>
-      <a href="projects/marikinago.html" class="btn">See More</a>
+      <div class="carousel" role="list">
+        <div class="project-card active" role="listitem">
+          <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
+          <h3>MarikinaGo App</h3>
+          <p>Tourism app with mapping and booking features built with Flutter & Firebase.</p>
+          <a href="projects/marikinago.html" class="btn">See More</a>
+        </div>
+
+        <div class="project-card" role="listitem">
+          <img src="assets/projects/ejeep.png" alt="E-Jeep Payment System">
+          <h3>E-Jeep Payment System</h3>
+          <p>Transportation fare and payment system for e-jeeps in the Philippines.</p>
+          <a href="projects/ejeep.html" class="btn">See More</a>
+        </div>
+
+        <div class="project-card" role="listitem">
+          <img src="assets/projects/visualnovel.png" alt="Visual Novel Game">
+          <h3>Visual Novel Game</h3>
+          <p>A Python & Ren’Py-based narrative visual novel experience.</p>
+          <a href="projects/visualnovel.html" class="btn">See More</a>
+        </div>
+      </div>
+
+      <button class="carousel-arrow right" aria-label="Next">❯</button>
+
+      <div class="carousel-dots" role="tablist" aria-label="Project navigation">
+        <span class="active" role="tab" aria-selected="true"></span>
+        <span role="tab" aria-selected="false"></span>
+        <span role="tab" aria-selected="false"></span>
+      </div>
     </div>
-
-    <div class="project-card">
-      <img src="assets/projects/ejeep.png" alt="E-Jeep Payment System">
-      <h3>E-Jeep Payment System</h3>
-      <p>Transportation fare and payment system for e-jeeps in the Philippines.</p>
-      <a href="projects/ejeep.html" class="btn">See More</a>
-    </div>
-
-    <div class="project-card">
-      <img src="assets/projects/visualnovel.png" alt="Visual Novel Game">
-      <h3>Visual Novel Game</h3>
-      <p>A Python & Ren’Py-based narrative visual novel experience.</p>
-      <a href="projects/visualnovel.html" class="btn">See More</a>
-    </div>
-  </div>
-
-  <button class="carousel-arrow right">❯</button>
-
-  <div class="carousel-dots">
-    <span class="active"></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-
-
   </section>
 
   <section id="certifications" class="section">
-  <h2>Certifications</h2>
-  <div class="cert-grid">
-    <a href="https://www.credly.com/badges/fef14601-dfd1-4364-8178-ea991b0795e4/public_url" target="_blank" class="cert-card">
-      <img src="assets/badges/ccna-enterprise-networking-security-and-automation.png" alt="CCNA Enterprise Networking, Security, and Automation">
-      <p>CCNA: Enterprise Networking, Security, and Automation</p>
-    </a>
+    <h2>Certifications</h2>
+    <div class="cert-grid">
+      <a href="https://www.credly.com/badges/fef14601-dfd1-4364-8178-ea991b0795e4/public_url" target="_blank" rel="noopener" class="cert-card">
+        <img src="assets/badges/ccna-enterprise-networking-security-and-automation.png" alt="CCNA">
+        <p>CCNA: Enterprise Networking, Security, and Automation</p>
+      </a>
+      <a href="https://www.credly.com/badges/077647c4-2a94-4a40-861d-9245d378d5bf/public_url" target="_blank" rel="noopener" class="cert-card">
+        <img src="assets/badges/ccna-switching-routing-and-wireless-essentials.1.png" alt="CCNA">
+        <p>CCNA: Switching, Routing, and Wireless Essentials</p>
+      </a>
+      <a href="https://www.credly.com/badges/02bd2f71-74cf-4b71-be91-9c55a202c896/public_url" target="_blank" rel="noopener" class="cert-card">
+        <img src="assets/badges/ccna-introduction-to-networks.png" alt="CCNA">
+        <p>CCNAv7: Introduction to Networks</p>
+      </a>
+      <a href="https://www.credly.com/badges/37d4c5c1-6c46-4b38-adcd-a6f8fc89d828/public_url" target="_blank" rel="noopener" class="cert-card">
+        <img src="assets/badges/certified-information-security-and-data-privacy-pra.png" alt="CISDP">
+        <p>CISDP - Certified Information Security and Data Privacy Practitioner</p>
+      </a>
+    </div>
 
-    <a href="https://www.credly.com/badges/077647c4-2a94-4a40-861d-9245d378d5bf/public_url" target="_blank" class="cert-card">
-      <img src="assets/badges/ccna-switching-routing-and-wireless-essentials.1.png" alt="CCNA Switching, Routing, and Wireless Essentials">
-      <p>CCNA: Switching, Routing, and Wireless Essentials</p>
-    </a>
-
-    <a href="https://www.credly.com/badges/02bd2f71-74cf-4b71-be91-9c55a202c896/public_url" target="_blank" class="cert-card">
-      <img src="assets/badges/ccna-introduction-to-networks.png" alt="CCNAv7 Introduction to Networks">
-      <p>CCNAv7: Introduction to Networks</p>
-    </a>
-
-    <a href="https://www.credly.com/badges/37d4c5c1-6c46-4b38-adcd-a6f8fc89d828/public_url" target="_blank" class="cert-card">
-      <img src="assets/badges/certified-information-security-and-data-privacy-pra.png" alt="Certified Information Security and Data Privacy Practitioner">
-      <p>CISDP - Certified Information Security and Data Privacy Practitioner</p>
-    </a>
-  </div>
     <div class="cert-list">
-  <h3>Other Certifications & Trainings</h3>
-  <ul>
-    <li>CCNAv7: Introduction to Networks</li>
-    <li>Partner: CPA - Programming Essentials in C++</li>
-    <li>Partner: CPP - Advanced Programming in C++</li>
-    <li>DICT-ICT014: Basic Level of Cloud Computing</li>
-    <li>DICT-WD001: Principles of Web Development and HTML</li>
-    <li>Programming for Beginners Using Python (DICT LMS, 2024)</li>
-    <li>Certified Data Center Technician (CDCT)</li>
-    <li>TryHackMe Labs: What is Networking?, Intro to LAN, OSI Model, Packets & Frames, Extending Your Network</li>
-  </ul>
-</div>
-
-</section>
+      <h3>Other Certifications & Trainings</h3>
+      <ul>
+        <li>CCNAv7: Introduction to Networks</li>
+        <li>Partner: CPA - Programming Essentials in C++</li>
+        <li>Partner: CPP - Advanced Programming in C++</li>
+        <li>DICT-ICT014: Basic Level of Cloud Computing</li>
+        <li>DICT-WD001: Principles of Web Development and HTML</li>
+        <li>Programming for Beginners Using Python (DICT LMS, 2024)</li>
+        <li>Certified Data Center Technician (CDCT)</li>
+        <li>TryHackMe Labs: What is Networking?, Intro to LAN, OSI Model, Packets & Frames, Extending Your Network</li>
+      </ul>
+    </div>
+  </section>
 
   <section id="contact" class="section">
     <h2>Contact Me</h2>
     <p>📞 +63 907 035 8888</p>
     <p>📧 <a href="mailto:lyeonnie33munoz@gmail.com">lyeonnie33munoz@gmail.com</a></p>
-    <p>🔗 <a href="https://www.linkedin.com/in/lyeonnie-muñoz-4aa321286" target="_blank">LinkedIn Profile</a></p>
-    <div class="contact-form">
-  <h3>Or message me directly 💌</h3>
-  <form action="https://formspree.io/f/mnngbber" method="POST">
-    <input type="email" name="email" placeholder="Your Email" required />
-    <input type="text" name="subject" placeholder="Subject" required />
-    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-    <button type="submit" class="btn">Send Message</button>
-  </form>
-</div>
+    <p>🔗 <a href="https://www.linkedin.com/in/lyeonnie-muñoz-4aa321286" target="_blank" rel="noopener">LinkedIn Profile</a></p>
 
+    <div class="contact-form">
+      <h3>Or message me directly 💌</h3>
+      <form action="https://formspree.io/f/mnngbber" method="POST">
+        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="text" name="subject" placeholder="Subject" required />
+        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </div>
   </section>
 
   <footer>
     <p>© 2025 Lyeonnie Muñoz. Built with 💜 using HTML, CSS, and JS.</p>
-    </footer>
+  </footer>
 
   <script>
-/* ====== Carousel + Dots + Autoplay + Swipe (robust) ====== */
-const carouselEl = document.querySelector('.carousel');
-const containerEl = document.querySelector('.carousel-container');
-const cards = Array.from(document.querySelectorAll('.carousel .project-card'));
-const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
-const leftArrow = document.querySelector('.carousel-arrow.left');
-const rightArrow = document.querySelector('.carousel-arrow.right');
+    /* ====== Carousel + Dots + Autoplay + Swipe + Centering fix ====== */
+    const carouselEl = document.querySelector('.carousel');
+    const containerEl = document.querySelector('.carousel-container');
+    const cards = Array.from(document.querySelectorAll('.carousel .project-card'));
+    const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
+    const leftArrow = document.querySelector('.carousel-arrow.left');
+    const rightArrow = document.querySelector('.carousel-arrow.right');
 
-let currentIndex = 0;
-let autoTimer = null;
-const AUTO_DELAY = 4000; // ms
+    let currentIndex = 0;
+    let autoTimer = null;
+    const AUTO_DELAY = 4000; // ms
 
-// Utility: compute gap (fallback to 25)
-function getGap() {
-  const gap = parseFloat(getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap);
-  return isNaN(gap) ? 25 : gap;
-}
+    function getGap() {
+      if (!carouselEl) return 25;
+      const gap = parseFloat(getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap);
+      return isNaN(gap) ? 25 : gap;
+    }
 
-function centerActiveCard(index) {
-  if (!cards.length) return;
+    function centerActiveCard(index) {
+      if (!cards.length || !carouselEl || !containerEl) return;
 
-  const cardWidth = cards[0].offsetWidth;
-  const gap = getGap();
-  const containerWidth = containerEl.clientWidth;
+      const cardWidth = cards[0].offsetWidth;
+      const gap = getGap();
+      const containerWidth = containerEl.clientWidth;
+      const containerStyle = getComputedStyle(containerEl);
+      const paddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
 
-  // position so that the active card's left is at (containerCenter - cardWidth/2)
-  // offsetFromFirst = index * (cardWidth + gap)
-  const offsetFromFirst = index * (cardWidth + gap);
-  const containerCenter = (containerWidth / 2);
-  const desiredTranslateX = containerCenter - (cardWidth / 2) - offsetFromFirst;
+      const offsetFromFirst = index * (cardWidth + gap);
 
-  carouselEl.style.transform = `translateX(${desiredTranslateX}px)`;
-}
+      // target so active card center aligns with container center
+      let desiredTranslateX = (containerWidth / 2) - (cardWidth / 2) - offsetFromFirst - paddingLeft;
 
-function updateClassesAndDots() {
-  const total = cards.length;
-  cards.forEach((c, i) => c.classList.remove('active','prev','next'));
+      // clamp so we don't translate too far and show empty space.
+      const totalWidth = cards.length * (cardWidth + gap) - gap;
+      const minTranslate = Math.min(0, containerWidth - totalWidth - paddingLeft);
+      const maxTranslate = Math.max(0, (containerWidth / 2) - (cardWidth / 2) - paddingLeft);
 
-  const prevIndex = (currentIndex - 1 + total) % total;
-  const nextIndex = (currentIndex + 1) % total;
+      if (desiredTranslateX < minTranslate) desiredTranslateX = minTranslate;
+      if (desiredTranslateX > maxTranslate) desiredTranslateX = maxTranslate;
 
-  cards[currentIndex].classList.add('active');
-  cards[prevIndex].classList.add('prev');
-  cards[nextIndex].classList.add('next');
+      carouselEl.style.transform = `translateX(${desiredTranslateX}px)`;
+    }
 
-  dots.forEach((d,i) => d.classList.toggle('active', i === currentIndex));
-}
+    function updateClassesAndDots() {
+      const total = cards.length;
+      if (!total) return;
+      cards.forEach(c => c.classList.remove('active','prev','next'));
+      const prevIndex = (currentIndex - 1 + total) % total;
+      const nextIndex = (currentIndex + 1) % total;
+      cards[currentIndex].classList.add('active');
+      cards[prevIndex].classList.add('prev');
+      cards[nextIndex].classList.add('next');
+      dots.forEach((d,i) => d.classList.toggle('active', i === currentIndex));
+    }
 
-function goTo(index) {
-  currentIndex = (index + cards.length) % cards.length;
-  updateClassesAndDots();
-  centerActiveCard(currentIndex);
-}
+    function goTo(index) {
+      currentIndex = (index + cards.length) % cards.length;
+      updateClassesAndDots();
+      centerActiveCard(currentIndex);
+    }
 
-function next() { goTo(currentIndex + 1); }
-function prev() { goTo(currentIndex - 1); }
+    function next() { goTo(currentIndex + 1); }
+    function prev() { goTo(currentIndex - 1); }
 
-// arrows
-rightArrow.addEventListener('click', () => {
-  next();
-  restartAuto();
-});
-leftArrow.addEventListener('click', () => {
-  prev();
-  restartAuto();
-});
+    if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAuto(); });
+    if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAuto(); });
 
-// dots click
-dots.forEach((dot, i) => dot.addEventListener('click', () => {
-  goTo(i);
-  restartAuto();
-}));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); restartAuto(); }));
 
-// auto-play
-function startAuto() {
-  stopAuto();
-  autoTimer = setInterval(() => next(), AUTO_DELAY);
-}
-function stopAuto() {
-  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-}
-function restartAuto() { stopAuto(); startAuto(); }
+    function startAuto() { stopAuto(); autoTimer = setInterval(() => next(), AUTO_DELAY); }
+    function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+    function restartAuto() { stopAuto(); startAuto(); }
 
-// pause on hover
-containerEl.addEventListener('mouseenter', stopAuto);
-containerEl.addEventListener('mouseleave', startAuto);
+    if (containerEl) {
+      containerEl.addEventListener('mouseenter', stopAuto);
+      containerEl.addEventListener('mouseleave', startAuto);
+    }
 
-// swipe (touch) support
-let touchStartX = 0;
-let touchDelta = 0;
-carouselEl.addEventListener('touchstart', (e) => {
-  touchStartX = e.touches[0].clientX;
-  touchDelta = 0;
-});
-carouselEl.addEventListener('touchmove', (e) => {
-  touchDelta = e.touches[0].clientX - touchStartX;
-});
-carouselEl.addEventListener('touchend', () => {
-  if (touchDelta > 50) { prev(); restartAuto(); }
-  else if (touchDelta < -50) { next(); restartAuto(); }
-  touchStartX = 0; touchDelta = 0;
-});
+    // swipe support
+    let touchStartX = 0;
+    let touchDelta = 0;
+    if (carouselEl) {
+      carouselEl.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; touchDelta = 0; });
+      carouselEl.addEventListener('touchmove', (e) => { touchDelta = e.touches[0].clientX - touchStartX; });
+      carouselEl.addEventListener('touchend', () => {
+        if (touchDelta > 50) { prev(); restartAuto(); }
+        else if (touchDelta < -50) { next(); restartAuto(); }
+        touchStartX = 0; touchDelta = 0;
+      });
+    }
 
-// handle resize: re-center
-window.addEventListener('resize', () => centerActiveCard(currentIndex));
+    window.addEventListener('resize', () => centerActiveCard(currentIndex));
 
-// initialize
-goTo(0);
-startAuto();
+    // ensure images loaded -> correct widths -> center properly
+    function imagesLoadedAndCenter() {
+      const imgs = Array.from(document.querySelectorAll('.carousel .project-card img'));
+      if (!imgs.length) { centerActiveCard(currentIndex); return; }
+      let count = 0;
+      imgs.forEach(img => {
+        if (img.complete) count++;
+        else {
+          img.addEventListener('load', () => { count++; if (count === imgs.length) centerActiveCard(currentIndex); });
+          img.addEventListener('error', () => { count++; if (count === imgs.length) centerActiveCard(currentIndex); });
+        }
+      });
+      if (count === imgs.length) centerActiveCard(currentIndex);
+    }
 
-
-/* ====== Theme toggle (moon/sun) — non-jiggly ====== */
-const toggleBtn = document.getElementById('theme-toggle');
-const bodyEl = document.body;
-let moonRotation = 0;
-
-toggleBtn.addEventListener('click', () => {
-  // rotate smoothly (cumulative), but button size is fixed so no layout shift
-  moonRotation += 360;
-  toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
-  // toggle theme class on body
-  bodyEl.classList.toggle('light-mode');
-
-  // change displayed emoji (optional); width won't change due to fixed button width
-  toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
-
-  // small focus style removal: keep UX smooth
-  toggleBtn.blur();
-});
-
-    /* ===== HAMBURGER / MOBILE MENU ===== */
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-
-if (hamburger && navLinks) {
-  hamburger.addEventListener('click', (e) => {
-    navLinks.classList.toggle('open');    // CSS uses .nav-links.open { right:15px; } to slide in
-    hamburger.classList.toggle('active'); // for X animation
-  });
-
-  // close mobile menu when a nav link is clicked
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      hamburger.classList.remove('active');
+    window.addEventListener('load', () => {
+      goTo(0);
+      startAuto();
+      imagesLoadedAndCenter();
+      centerActiveCard(currentIndex);
     });
-  });
-}
 
+    /* ====== Theme toggle (moon/sun) — non-jiggly ====== */
+    const toggleBtn = document.getElementById('theme-toggle');
+    const bodyEl = document.body;
+    let moonRotation = 0;
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        moonRotation += 360;
+        toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
+        bodyEl.classList.toggle('light-mode');
+        toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
+        toggleBtn.blur();
+      });
+    }
 
-    
-</script>
+    /* ===== HAMBURGER / MOBILE MENU & smooth nav scrolling ===== */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
 
+    function setMenuOpen(open) {
+      if (!navLinks || !hamburger) return;
+      navLinks.classList.toggle('open', open);
+      hamburger.classList.toggle('active', open);
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    if (hamburger && navLinks) {
+      setMenuOpen(false);
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nowOpen = !navLinks.classList.contains('open');
+        setMenuOpen(nowOpen);
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          const href = a.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            const id = href.slice(1);
+            const target = document.getElementById(id);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+          setMenuOpen(false);
+        });
+      });
+
+      // close if clicking outside on mobile
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+          if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) setMenuOpen(false);
+        }
+      });
+
+      // close on ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenuOpen(false);
+      });
+
+      // when resizing to desktop, ensure menu closed
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenuOpen(false);
+      });
+    }
+  </script>
 </body>
 </html>
