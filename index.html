@@ -186,13 +186,21 @@
   }
 
   // Fix: Use card's offsetLeft relative to carousel, and center in container
-  function calcTranslateForIndex(idx) {
-    const card = cards[idx];
-    if (!card) return 0;
+// Replace your calcTranslateForIndex function with this:
+function calcTranslateForIndex(idx) {
+  const card = cards[idx];
+  if (!card) return 0;
+  // On mobile, center the active card with no gap for prev/next
+  if (window.innerWidth <= 768) {
     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
     const containerCenter = containerEl.clientWidth / 2;
     return containerCenter - cardCenter;
   }
+  // On desktop, center the active card and show prev/next smoothly
+  const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+  const containerCenter = containerEl.clientWidth / 2;
+  return containerCenter - cardCenter;
+}
 
   function applyTranslate(idx, withTransition) {
     setTransition(withTransition);
