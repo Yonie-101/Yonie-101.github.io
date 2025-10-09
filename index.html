@@ -57,7 +57,7 @@
       <button class="carousel-arrow left" aria-label="Previous">❮</button>
 
       <div class="carousel" role="list">
-        <div class="project-card active" role="listitem">
+        <div class="project-card" role="listitem">
           <div class="img-wrap"><img src="assets/projects/marikinago.png" alt="MarikinaGo App"></div>
           <h3>MarikinaGo App</h3>
           <p>Tourism app with mapping and booking features built with Flutter & Firebase.</p>
@@ -147,172 +147,193 @@
   </footer>
 
   <script>
-    const carouselEl = document.querySelector('.carousel');
-    const containerEl = document.querySelector('.carousel-container');
-    const cards = Array.from(document.querySelectorAll('.carousel .project-card'));
-    const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
-    const leftArrow = document.querySelector('.carousel-arrow.left');
-    const rightArrow = document.querySelector('.carousel-arrow.right');
-
-    let currentIndex = 0;
-    let autoTimer = null;
-    const AUTO_DELAY = 4000;
-
-    function centerActiveCard(index) {
-      if (!cards.length || !carouselEl || !containerEl) return;
-      const card = cards[index];
-      const cardWidth = card.offsetWidth;
-      const containerWidth = containerEl.clientWidth;
-
-      // card.offsetLeft is relative to carouselEl
-      const cardOffset = card.offsetLeft;
-
-      // desired translate so the card center aligns with container center
-      let desired = (containerWidth / 2) - (cardOffset + cardWidth / 2);
-
-      const totalWidth = carouselEl.scrollWidth;
-      if (totalWidth <= containerWidth) {
-        desired = (containerWidth - totalWidth) / 2;
-      } else {
-        const minTranslate = containerWidth - totalWidth;
-        const maxTranslate = 0;
-        if (desired < minTranslate) desired = minTranslate;
-        if (desired > maxTranslate) desired = maxTranslate;
+    (function () {
+      const carouselEl = document.querySelector('.carousel');
+      const containerEl = document.querySelector('.carousel-container');
+      const dotsContainer = document.querySelector('.carousel-dots');
+      const leftArrow = document.querySelector('.carousel-arrow.left');
+      const rightArrow = document.querySelector('.carousel-arrow.right');
+      if (!carouselEl || !containerEl) return;
+      const originals = Array.from(carouselEl.querySelectorAll('.project-card'));
+      if (!originals.length) return;
+      const firstClone = originals[0].cloneNode(true);
+      const lastClone = originals[originals.length - 1].cloneNode(true);
+      firstClone.setAttribute('data-clone', 'first');
+      lastClone.setAttribute('data-clone', 'last');
+      carouselEl.appendChild(firstClone);
+      carouselEl.insertBefore(lastClone, carouselEl.firstChild);
+      let cards = Array.from(carouselEl.children);
+      let index = 1;
+      let autoTimer = null;
+      const AUTO_DELAY = 4000;
+      function setTransition(enable) {
+        carouselEl.style.transition = enable ? 'transform .55s cubic-bezier(.22,.9,.28,1)' : 'none';
       }
-      carouselEl.style.transform = `translateX(${desired}px)`;
-    }
-
-    function updateClassesAndDots() {
-      const total = cards.length;
-      if (!total) return;
-      cards.forEach(c => c.classList.remove('active','prev','next'));
-      const prevIndex = (currentIndex - 1 + total) % total;
-      const nextIndex = (currentIndex + 1) % total;
-      cards[currentIndex].classList.add('active');
-      cards[prevIndex].classList.add('prev');
-      cards[nextIndex].classList.add('next');
-      dots.forEach((d,i) => d.classList.toggle('active', i === currentIndex));
-    }
-
-    function goTo(index) {
-      currentIndex = (index + cards.length) % cards.length;
-      updateClassesAndDots();
-      centerActiveCard(currentIndex);
-    }
-    function next() { goTo(currentIndex + 1); }
-    function prev() { goTo(currentIndex - 1); }
-
-    if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAuto(); });
-    if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAuto(); });
-    dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); restartAuto(); }));
-
-    function startAuto() { stopAuto(); autoTimer = setInterval(() => next(), AUTO_DELAY); }
-    function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
-    function restartAuto() { stopAuto(); startAuto(); }
-
-    if (containerEl) {
+      function calcTranslateForIndex(idx) {
+        const card = cards[idx];
+        if (!card) return 0;
+        const containerWidth = containerEl.clientWidth;
+        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+        const desired = (containerWidth / 2) - cardCenter;
+        const totalWidth = carouselEl.scrollWidth;
+        const maxTranslate = 0;
+        const minTranslate = Math.min(0, containerWidth - totalWidth);
+        return Math.max(Math.min(desired, maxTranslate), minTranslate);
+      }
+      function applyTranslate(idx, withTransition) {
+        setTransition(withTransition);
+        const tx = calcTranslateForIndex(idx);
+        carouselEl.style.transform = `translateX(${tx}px)`;
+      }
+      function updateClasses() {
+        const n = originals.length;
+        if (!n) return;
+        const realIndex = ((index - 1) % n + n) % n;
+        cards.forEach(c => c.classList.remove('active', 'prev', 'next'));
+        const activeEl = cards[realIndex + 1];
+        const prevEl = cards[((realIndex - 1 + n) % n) + 1];
+        const nextEl = cards[((realIndex + 1) % n) + 1];
+        if (activeEl) activeEl.classList.add('active');
+        if (prevEl) prevEl.classList.add('prev');
+        if (nextEl) nextEl.classList.add('next');
+        if (dotsContainer) {
+          const dots = Array.from(dotsContainer.children);
+          dots.forEach((d, i) => d.classList.toggle('active', i === realIndex));
+        }
+      }
+      function toIndex(newIndex) {
+        index = newIndex;
+        applyTranslate(index, true);
+        updateClasses();
+      }
+      function next() { toIndex(index + 1); }
+      function prev() { toIndex(index - 1); }
+      carouselEl.addEventListener('transitionend', () => {
+        cards = Array.from(carouselEl.children);
+        const current = cards[index];
+        if (!current) return;
+        if (current.dataset.clone === 'first') {
+          index = 1;
+          applyTranslate(index, false);
+          updateClasses();
+        } else if (current.dataset.clone === 'last') {
+          index = originals.length;
+          applyTranslate(index, false);
+          updateClasses();
+        }
+      });
+      if (dotsContainer) {
+        const dots = Array.from(dotsContainer.children);
+        dots.forEach((d, i) => {
+          d.addEventListener('click', () => {
+            index = i + 1;
+            applyTranslate(index, true);
+            updateClasses();
+            restartAuto();
+          });
+        });
+      }
+      if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAuto(); });
+      if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAuto(); });
+      let startX = 0;
+      let deltaX = 0;
+      carouselEl.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        deltaX = 0;
+      }, {passive: true});
+      carouselEl.addEventListener('touchmove', (e) => {
+        deltaX = e.touches[0].clientX - startX;
+      }, {passive: true});
+      carouselEl.addEventListener('touchend', () => {
+        if (deltaX > 50) { prev(); restartAuto(); }
+        else if (deltaX < -50) { next(); restartAuto(); }
+        startX = 0; deltaX = 0;
+      });
+      function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(() => { next(); }, AUTO_DELAY);
+      }
+      function stopAuto() {
+        if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+      }
+      function restartAuto() { stopAuto(); startAuto(); }
       containerEl.addEventListener('mouseenter', stopAuto);
       containerEl.addEventListener('mouseleave', startAuto);
-    }
-
-    // touch/swipe
-    let touchStartX = 0;
-    let touchDelta = 0;
-    if (carouselEl) {
-      carouselEl.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; touchDelta = 0; });
-      carouselEl.addEventListener('touchmove', (e) => { touchDelta = e.touches[0].clientX - touchStartX; });
-      carouselEl.addEventListener('touchend', () => {
-        if (touchDelta > 50) { prev(); restartAuto(); }
-        else if (touchDelta < -50) { next(); restartAuto(); }
-        touchStartX = 0; touchDelta = 0;
-      });
-    }
-
-    window.addEventListener('resize', () => centerActiveCard(currentIndex));
-
-    // ensure images loaded before first centering
-    function imagesLoadedAndCenter() {
-      const imgs = Array.from(document.querySelectorAll('.carousel .project-card img'));
-      if (!imgs.length) { centerActiveCard(currentIndex); return; }
-      let count = 0;
-      imgs.forEach(img => {
-        if (img.complete) count++;
-        else {
-          img.addEventListener('load', () => { count++; if (count === imgs.length) centerActiveCard(currentIndex); });
-          img.addEventListener('error', () => { count++; if (count === imgs.length) centerActiveCard(currentIndex); });
-        }
-      });
-      if (count === imgs.length) centerActiveCard(currentIndex);
-    }
-
-    window.addEventListener('load', () => {
-      goTo(0);
-      startAuto();
-      imagesLoadedAndCenter();
-      centerActiveCard(currentIndex);
-    });
-
-    // theme toggle
-    const toggleBtn = document.getElementById('theme-toggle');
-    const bodyEl = document.body;
-    let moonRotation = 0;
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', () => {
-        moonRotation += 360;
-        toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
-        bodyEl.classList.toggle('light-mode');
-        toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
-        setTimeout(() => centerActiveCard(currentIndex), 120);
-        toggleBtn.blur();
-      });
-    }
-
-    // hamburger & smooth nav scrolling
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-
-    function setMenuOpen(open) {
-      if (!navLinks || !hamburger) return;
-      navLinks.classList.toggle('open', open);
-      hamburger.classList.toggle('active', open);
-      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-
-    if (hamburger && navLinks) {
-      setMenuOpen(false);
-      hamburger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const nowOpen = !navLinks.classList.contains('open');
-        setMenuOpen(nowOpen);
-      });
-
-      document.querySelectorAll('.nav-links a').forEach(a => {
-        a.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          const href = a.getAttribute('href');
-          if (href && href.startsWith('#')) {
-            const id = href.slice(1);
-            const target = document.getElementById(id);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-          setMenuOpen(false);
-        });
-      });
-
-      document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
-          if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) setMenuOpen(false);
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenuOpen(false);
-      });
-
       window.addEventListener('resize', () => {
-        if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenuOpen(false);
+        cards = Array.from(carouselEl.children);
+        applyTranslate(index, false);
       });
-    }
+      function imagesLoadedAndCenter() {
+        const imgs = Array.from(carouselEl.querySelectorAll('img'));
+        if (!imgs.length) { applyTranslate(index, false); updateClasses(); return; }
+        let loaded = 0;
+        imgs.forEach(img => {
+          if (img.complete) { loaded++; }
+          else {
+            img.addEventListener('load', () => { loaded++; if (loaded === imgs.length) { applyTranslate(index, false); updateClasses(); } });
+            img.addEventListener('error', () => { loaded++; if (loaded === imgs.length) { applyTranslate(index, false); updateClasses(); } });
+          }
+        });
+        if (loaded === imgs.length) { applyTranslate(index, false); updateClasses(); }
+      }
+      cards = Array.from(carouselEl.children);
+      applyTranslate(index, false);
+      updateClasses();
+      imagesLoadedAndCenter();
+      startAuto();
+      const toggleBtn = document.getElementById('theme-toggle');
+      const bodyEl = document.body;
+      let moonRotation = 0;
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          moonRotation += 360;
+          toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
+          bodyEl.classList.toggle('light-mode');
+          toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
+          setTimeout(() => applyTranslate(index, false), 140);
+          toggleBtn.blur();
+        });
+      }
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      function setMenuOpen(open) {
+        if (!navLinks || !hamburger) return;
+        navLinks.classList.toggle('open', open);
+        hamburger.classList.toggle('active', open);
+        hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      if (hamburger && navLinks) {
+        setMenuOpen(false);
+        hamburger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const nowOpen = !navLinks.classList.contains('open');
+          setMenuOpen(nowOpen);
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+          a.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            const href = a.getAttribute('href');
+            if (href && href.startsWith('#')) {
+              const id = href.slice(1);
+              const target = document.getElementById(id);
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            setMenuOpen(false);
+          });
+        });
+        document.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+            if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) setMenuOpen(false);
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenuOpen(false);
+        });
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenuOpen(false);
+        });
+      }
+    })();
   </script>
 </body>
 </html>
