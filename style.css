@@ -352,12 +352,23 @@ body.light-mode footer {
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
   .nav-links {
-  transform: translateX(100%);
-  transition: transform 0.35s ease;
+  position: fixed;
+  top: var(--header-height);
+  right: -260px; /* <-- hides it fully, no peeking */
+  background: rgba(20, 0, 40, 0.95);
+  flex-direction: column;
+  align-items: flex-start;
+  width: 230px;
+  padding: 20px;
+  border-radius: 10px 0 0 10px;
+  transition: right 0.35s ease;
+  z-index: 9999;
 }
+
 .nav-links.open {
-  transform: translateX(0);
+  right: 15px; /* <-- gives small visible offset, neat look */
 }
+
 
 
   header {
@@ -422,12 +433,10 @@ body.light-mode .hamburger.active .bar {
   }
 
   .carousel .project-card {
-    width: 85vw; /* full width minus side padding */
-    height: auto;
-    flex: 0 0 85vw;
-    transform: scale(1);
-    opacity: 1;
-  }
+  width: 85vw; /* full width */
+  flex: 0 0 85vw; /* ensures only one fits per view */
+}
+
 
   .carousel .project-card img {
     height: 180px;
