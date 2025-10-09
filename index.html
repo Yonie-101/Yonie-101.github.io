@@ -77,12 +77,20 @@
           <p>A Python & Ren’Py-based narrative visual novel experience.</p>
           <a href="projects/visualnovel.html" class="btn">See More</a>
         </div>
+
+        <div class="project-card" role="listitem">
+          <div class="img-wrap"><img src="assets/projects/studentcozycorner.png" alt="Student Cozy Corner"></div>
+          <h3>Student Cozy Corner</h3>
+          <p>A simple community app for students to share tips, study resources, and cozy corners.</p>
+          <a href="projects/studentcozycorner.html" class="btn">See More</a>
+        </div>
       </div>
 
       <button class="carousel-arrow right" aria-label="Next">❯</button>
 
       <div class="carousel-dots" role="tablist" aria-label="Project navigation">
         <span class="active" role="tab" aria-selected="true"></span>
+        <span role="tab" aria-selected="false"></span>
         <span role="tab" aria-selected="false"></span>
         <span role="tab" aria-selected="false"></span>
       </div>
@@ -154,6 +162,8 @@
       const leftArrow = document.querySelector('.carousel-arrow.left');
       const rightArrow = document.querySelector('.carousel-arrow.right');
       if (!carouselEl || !containerEl) return;
+      // remove any previous clones to avoid duplicates
+      Array.from(carouselEl.querySelectorAll('[data-clone]')).forEach(n => n.remove());
       const originals = Array.from(carouselEl.querySelectorAll('.project-card'));
       if (!originals.length) return;
       const firstClone = originals[0].cloneNode(true);
