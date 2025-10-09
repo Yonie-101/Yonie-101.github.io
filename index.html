@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lyeonnie Muñoz | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -58,27 +58,21 @@
 
       <div class="carousel" role="list">
         <div class="project-card active" role="listitem">
-          <div class="img-wrap">
-            <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
-          </div>
+          <div class="img-wrap"><img src="assets/projects/marikinago.png" alt="MarikinaGo App"></div>
           <h3>MarikinaGo App</h3>
           <p>Tourism app with mapping and booking features built with Flutter & Firebase.</p>
           <a href="projects/marikinago.html" class="btn">See More</a>
         </div>
 
         <div class="project-card" role="listitem">
-          <div class="img-wrap">
-            <img src="assets/projects/ejeep.png" alt="E-Jeep Payment System">
-          </div>
+          <div class="img-wrap"><img src="assets/projects/ejeep.png" alt="E-Jeep Payment System"></div>
           <h3>E-Jeep Payment System</h3>
           <p>Transportation fare and payment system for e-jeeps in the Philippines.</p>
           <a href="projects/ejeep.html" class="btn">See More</a>
         </div>
 
         <div class="project-card" role="listitem">
-          <div class="img-wrap">
-            <img src="assets/projects/visualnovel.png" alt="Visual Novel Game">
-          </div>
+          <div class="img-wrap"><img src="assets/projects/visualnovel.png" alt="Visual Novel Game"></div>
           <h3>Visual Novel Game</h3>
           <p>A Python & Ren’Py-based narrative visual novel experience.</p>
           <a href="projects/visualnovel.html" class="btn">See More</a>
@@ -98,19 +92,19 @@
   <section id="certifications" class="section">
     <h2>Certifications</h2>
     <div class="cert-grid">
-      <a href="https://www.credly.com/badges/fef14601-dfd1-4364-8178-ea991b0795e4/public_url" target="_blank" rel="noopener" class="cert-card">
+      <a class="cert-card" href="https://www.credly.com/badges/fef14601-dfd1-4364-8178-ea991b0795e4/public_url" target="_blank" rel="noopener">
         <img src="assets/badges/ccna-enterprise-networking-security-and-automation.png" alt="CCNA">
         <p>CCNA: Enterprise Networking, Security, and Automation</p>
       </a>
-      <a href="https://www.credly.com/badges/077647c4-2a94-4a40-861d-9245d378d5bf/public_url" target="_blank" rel="noopener" class="cert-card">
+      <a class="cert-card" href="https://www.credly.com/badges/077647c4-2a94-4a40-861d-9245d378d5bf/public_url" target="_blank" rel="noopener">
         <img src="assets/badges/ccna-switching-routing-and-wireless-essentials.1.png" alt="CCNA">
         <p>CCNA: Switching, Routing, and Wireless Essentials</p>
       </a>
-      <a href="https://www.credly.com/badges/02bd2f71-74cf-4b71-be91-9c55a202c896/public_url" target="_blank" rel="noopener" class="cert-card">
+      <a class="cert-card" href="https://www.credly.com/badges/02bd2f71-74cf-4b71-be91-9c55a202c896/public_url" target="_blank" rel="noopener">
         <img src="assets/badges/ccna-introduction-to-networks.png" alt="CCNA">
         <p>CCNAv7: Introduction to Networks</p>
       </a>
-      <a href="https://www.credly.com/badges/37d4c5c1-6c46-4b38-adcd-a6f8fc89d828/public_url" target="_blank" rel="noopener" class="cert-card">
+      <a class="cert-card" href="https://www.credly.com/badges/37d4c5c1-6c46-4b38-adcd-a6f8fc89d828/public_url" target="_blank" rel="noopener">
         <img src="assets/badges/certified-information-security-and-data-privacy-pra.png" alt="CISDP">
         <p>CISDP - Certified Information Security and Data Privacy Practitioner</p>
       </a>
@@ -165,25 +159,31 @@
 
     function getGap() {
       if (!carouselEl) return 25;
-      const gap = parseFloat(getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap);
+      const computed = getComputedStyle(carouselEl).gap || getComputedStyle(carouselEl).columnGap;
+      const gap = parseFloat(computed);
       return isNaN(gap) ? 25 : gap;
     }
 
     function centerActiveCard(index) {
       if (!cards.length || !carouselEl || !containerEl) return;
-      const cardWidth = cards[0].offsetWidth;
-      const gap = getGap();
+      const card = cards[index];
+      const cardWidth = card.offsetWidth;
       const containerWidth = containerEl.clientWidth;
-      const containerStyle = getComputedStyle(containerEl);
-      const paddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
-      const offsetFromFirst = index * (cardWidth + gap);
-      let desiredTranslateX = (containerWidth / 2) - (cardWidth / 2) - offsetFromFirst - paddingLeft;
-      const totalWidth = cards.length * (cardWidth + gap) - gap;
-      const minTranslate = Math.min(0, containerWidth - totalWidth - paddingLeft);
-      const maxTranslate = Math.max(0, (containerWidth / 2) - (cardWidth / 2) - paddingLeft);
-      if (desiredTranslateX < minTranslate) desiredTranslateX = minTranslate;
-      if (desiredTranslateX > maxTranslate) desiredTranslateX = maxTranslate;
-      carouselEl.style.transform = `translateX(${desiredTranslateX}px)`;
+      const cardOffsetLeft = card.offsetLeft;
+      const totalWidth = carouselEl.scrollWidth;
+      // desired translate so the card center aligns with container center
+      let desired = (containerWidth / 2) - (cardOffsetLeft + cardWidth / 2);
+
+      // if total track is smaller than container, center the whole track
+      if (totalWidth <= containerWidth) {
+        desired = (containerWidth - totalWidth) / 2;
+      } else {
+        const minTranslate = containerWidth - totalWidth;
+        const maxTranslate = 0;
+        if (desired < minTranslate) desired = minTranslate;
+        if (desired > maxTranslate) desired = maxTranslate;
+      }
+      carouselEl.style.transform = `translateX(${desired}px)`;
     }
 
     function updateClassesAndDots() {
@@ -203,7 +203,6 @@
       updateClassesAndDots();
       centerActiveCard(currentIndex);
     }
-
     function next() { goTo(currentIndex + 1); }
     function prev() { goTo(currentIndex - 1); }
 
@@ -255,6 +254,7 @@
       centerActiveCard(currentIndex);
     });
 
+    /* theme toggle */
     const toggleBtn = document.getElementById('theme-toggle');
     const bodyEl = document.body;
     let moonRotation = 0;
@@ -264,10 +264,13 @@
         toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
         bodyEl.classList.toggle('light-mode');
         toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
+        // re-center (fade backgrounds etc need time)
+        setTimeout(() => centerActiveCard(currentIndex), 120);
         toggleBtn.blur();
       });
     }
 
+    /* hamburger & nav smooth scroll */
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
