@@ -176,25 +176,33 @@
       let index = 1;
       let autoTimer = null;
       const AUTO_DELAY = 4000;
+
       function setTransition(enable) {
         carouselEl.style.transition = enable ? 'transform .55s cubic-bezier(.22,.9,.28,1)' : 'none';
       }
+
+      // --- FIX: Use boundingClientRect to center the card in the viewport ---
       function calcTranslateForIndex(idx) {
         const card = cards[idx];
         if (!card) return 0;
-        const containerWidth = containerEl.clientWidth;
-        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-        const desired = (containerWidth / 2) - cardCenter;
-        const totalWidth = carouselEl.scrollWidth;
-        const maxTranslate = 0;
-        const minTranslate = Math.min(0, containerWidth - totalWidth);
-        return Math.max(Math.min(desired, maxTranslate), minTranslate);
+        // Find the offset of the card relative to the carousel track
+        const cardRect = card.getBoundingClientRect();
+        const carouselRect = carouselEl.getBoundingClientRect();
+        const containerRect = containerEl.getBoundingClientRect();
+        // Card's center position RELATIVE to the carousel track
+        const cardCenterInCarousel = card.offsetLeft + card.offsetWidth / 2;
+        // Container center
+        const containerCenter = containerEl.clientWidth / 2;
+        // Amount to shift the carousel track so that card's center aligns with container's center
+        return containerCenter - cardCenterInCarousel;
       }
+
       function applyTranslate(idx, withTransition) {
         setTransition(withTransition);
         const tx = calcTranslateForIndex(idx);
         carouselEl.style.transform = `translateX(${tx}px)`;
       }
+
       function updateClasses() {
         const n = originals.length;
         if (!n) return;
@@ -245,6 +253,7 @@
       }
       if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAuto(); });
       if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAuto(); });
+
       let startX = 0;
       let deltaX = 0;
       carouselEl.addEventListener('touchstart', (e) => {
@@ -259,6 +268,7 @@
         else if (deltaX < -50) { next(); restartAuto(); }
         startX = 0; deltaX = 0;
       });
+
       function startAuto() {
         stopAuto();
         autoTimer = setInterval(() => { next(); }, AUTO_DELAY);
@@ -273,6 +283,7 @@
         cards = Array.from(carouselEl.children);
         applyTranslate(index, false);
       });
+
       function imagesLoadedAndCenter() {
         const imgs = Array.from(carouselEl.querySelectorAll('img'));
         if (!imgs.length) { applyTranslate(index, false); updateClasses(); return; }
@@ -291,6 +302,8 @@
       updateClasses();
       imagesLoadedAndCenter();
       startAuto();
+
+      // --- rest of nav/theme JS unchanged ---
       const toggleBtn = document.getElementById('theme-toggle');
       const bodyEl = document.body;
       let moonRotation = 0;
