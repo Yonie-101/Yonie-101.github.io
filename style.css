@@ -233,14 +233,18 @@ body.light-mode .carousel-container::before { left:0; background: linear-gradien
 body.light-mode .carousel-container::after { right:0; background: linear-gradient(to left, rgba(250,246,255,1), rgba(250,246,255,0)); }
 
 /* --- CAROUSEL FIX --- */
-S
+
 .carousel {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: stretch;
   gap: var(--card-gap);
   justify-content: flex-start;
   will-change: transform;
   transition: transform .55s cubic-bezier(.22,.9,.28,1);
+  width: 100%;
+  /* Prevent wrapping! */
+  flex-wrap: nowrap;
 }
 
 .carousel .project-card {
@@ -385,9 +389,12 @@ body.light-mode .carousel-arrow:hover { background: rgba(0,0,0,0.18); }
   }
   .carousel {
     gap: 0;
+    flex-direction: row;
     justify-content: flex-start;
     padding-left: 0;
     will-change: transform;
+    width: 100%;
+    flex-wrap: nowrap;
   }
   .carousel .project-card {
     width: 92vw;
