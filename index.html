@@ -58,21 +58,27 @@
 
       <div class="carousel" role="list">
         <div class="project-card active" role="listitem">
-          <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
+          <div class="img-wrap">
+            <img src="assets/projects/marikinago.png" alt="MarikinaGo App">
+          </div>
           <h3>MarikinaGo App</h3>
           <p>Tourism app with mapping and booking features built with Flutter & Firebase.</p>
           <a href="projects/marikinago.html" class="btn">See More</a>
         </div>
 
         <div class="project-card" role="listitem">
-          <img src="assets/projects/ejeep.png" alt="E-Jeep Payment System">
+          <div class="img-wrap">
+            <img src="assets/projects/ejeep.png" alt="E-Jeep Payment System">
+          </div>
           <h3>E-Jeep Payment System</h3>
           <p>Transportation fare and payment system for e-jeeps in the Philippines.</p>
           <a href="projects/ejeep.html" class="btn">See More</a>
         </div>
 
         <div class="project-card" role="listitem">
-          <img src="assets/projects/visualnovel.png" alt="Visual Novel Game">
+          <div class="img-wrap">
+            <img src="assets/projects/visualnovel.png" alt="Visual Novel Game">
+          </div>
           <h3>Visual Novel Game</h3>
           <p>A Python & Ren’Py-based narrative visual novel experience.</p>
           <a href="projects/visualnovel.html" class="btn">See More</a>
@@ -147,17 +153,15 @@
   </footer>
 
   <script>
-    /* ====== Carousel + Dots + Autoplay + Swipe + Centering fix ====== */
     const carouselEl = document.querySelector('.carousel');
     const containerEl = document.querySelector('.carousel-container');
     const cards = Array.from(document.querySelectorAll('.carousel .project-card'));
     const dots = Array.from(document.querySelectorAll('.carousel-dots span'));
     const leftArrow = document.querySelector('.carousel-arrow.left');
     const rightArrow = document.querySelector('.carousel-arrow.right');
-
     let currentIndex = 0;
     let autoTimer = null;
-    const AUTO_DELAY = 4000; // ms
+    const AUTO_DELAY = 4000;
 
     function getGap() {
       if (!carouselEl) return 25;
@@ -167,26 +171,18 @@
 
     function centerActiveCard(index) {
       if (!cards.length || !carouselEl || !containerEl) return;
-
       const cardWidth = cards[0].offsetWidth;
       const gap = getGap();
       const containerWidth = containerEl.clientWidth;
       const containerStyle = getComputedStyle(containerEl);
       const paddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
-
       const offsetFromFirst = index * (cardWidth + gap);
-
-      // target so active card center aligns with container center
       let desiredTranslateX = (containerWidth / 2) - (cardWidth / 2) - offsetFromFirst - paddingLeft;
-
-      // clamp so we don't translate too far and show empty space.
       const totalWidth = cards.length * (cardWidth + gap) - gap;
       const minTranslate = Math.min(0, containerWidth - totalWidth - paddingLeft);
       const maxTranslate = Math.max(0, (containerWidth / 2) - (cardWidth / 2) - paddingLeft);
-
       if (desiredTranslateX < minTranslate) desiredTranslateX = minTranslate;
       if (desiredTranslateX > maxTranslate) desiredTranslateX = maxTranslate;
-
       carouselEl.style.transform = `translateX(${desiredTranslateX}px)`;
     }
 
@@ -213,7 +209,6 @@
 
     if (rightArrow) rightArrow.addEventListener('click', () => { next(); restartAuto(); });
     if (leftArrow) leftArrow.addEventListener('click', () => { prev(); restartAuto(); });
-
     dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); restartAuto(); }));
 
     function startAuto() { stopAuto(); autoTimer = setInterval(() => next(), AUTO_DELAY); }
@@ -225,7 +220,6 @@
       containerEl.addEventListener('mouseleave', startAuto);
     }
 
-    // swipe support
     let touchStartX = 0;
     let touchDelta = 0;
     if (carouselEl) {
@@ -240,7 +234,6 @@
 
     window.addEventListener('resize', () => centerActiveCard(currentIndex));
 
-    // ensure images loaded -> correct widths -> center properly
     function imagesLoadedAndCenter() {
       const imgs = Array.from(document.querySelectorAll('.carousel .project-card img'));
       if (!imgs.length) { centerActiveCard(currentIndex); return; }
@@ -262,7 +255,6 @@
       centerActiveCard(currentIndex);
     });
 
-    /* ====== Theme toggle (moon/sun) — non-jiggly ====== */
     const toggleBtn = document.getElementById('theme-toggle');
     const bodyEl = document.body;
     let moonRotation = 0;
@@ -276,7 +268,6 @@
       });
     }
 
-    /* ===== HAMBURGER / MOBILE MENU & smooth nav scrolling ===== */
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
 
@@ -310,19 +301,16 @@
         });
       });
 
-      // close if clicking outside on mobile
       document.addEventListener('click', (e) => {
         if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
           if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) setMenuOpen(false);
         }
       });
 
-      // close on ESC
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenuOpen(false);
       });
 
-      // when resizing to desktop, ensure menu closed
       window.addEventListener('resize', () => {
         if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenuOpen(false);
       });
