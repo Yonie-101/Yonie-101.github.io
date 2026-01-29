@@ -7,9 +7,35 @@
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-  <header class="project-header">
-    <a href="../index.html" class="back-link">← Back to Portfolio</a>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="../assets/logo-placeholder.png" alt="YeonWorks Logo" class="logo-img" />
+        <span>YeonWorks</span>
+      </div>
+
+      <div class="nav-right">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="../index.html#home">Home</a></li>
+          <li><a href="../index.html#about">About</a></li>
+          <li><a href="../index.html#projects">Projects</a></li>
+          <li><a href="../index.html#certifications">Certifications</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+          <button id="hamburger" class="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false">
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
   </header>
+
+  <div style="height: calc(var(--header-height));"></div>
 
   <main class="project-page">
     <section class="project-main">
@@ -30,16 +56,16 @@
       <h2>Gallery</h2>
       <div class="project-gallery">
         <!-- Need maglagay gallery images in assets/projects/marikina-go/ w name 1.jpg, 2.jpg, ... -->
-        <img src="../assets/projects/marikina/1.jpg" alt="MarikinaGo screenshot 1">
-        <img src="../assets/projects/marikina/2.jpg" alt="MarikinaGo screenshot 2">
-        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3">
+        <img src="../assets/projects/marikina/1.jpg" alt="MarikinaGo screenshot 1" loading="lazy">
+        <img src="../assets/projects/marikina/2.jpg" alt="MarikinaGo screenshot 2" loading="lazy">
+        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3" loading="lazy">
       </div>
 
       <h2>Available on</h2>
       <p>Android · Web admin dashboard</p>
 
       <h2>Project Files</h2>
-      <ul class="project-files">
+       <ul class="project-files">
         <li><a href="../assets/projects/marikina/MarikinaGo_Documentation.pdf" target="_blank" rel="noopener">System Documentation (PDF)</a></li>
         <li><a href="../assets/projects/marikina/MarikinaGo%20Service%20%26%20Maintenance%20Manual.pdf" target="_blank" rel="noopener">System Manual (PDF)</a></li>
         <li><a href="../assets/projects/marikina/README.txt" target="_blank" rel="noopener">README.txt</a></li>
@@ -54,7 +80,7 @@
       <h3>Project facts</h3>
       <ul>
         <li><strong>Role:</strong> Lead Developer</li>
-        <li><strong>Duration:</strong> 1 year </li>
+        <li><strong>Duration:</strong> 1 year</li>
         <li><strong>Status:</strong> Completed</li>
         <li><strong>Stack:</strong> Flutter, Firebase, Firestore</li>
       </ul>
@@ -64,6 +90,98 @@
   <footer class="project-footer">
     <p>© 2025 Lyeonnie Muñoz. Built with 💜</p>
   </footer>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <img class="lightbox-img" alt="">
+    <div class="lightbox-caption" aria-hidden="true"></div>
+  </div>
+
+<script>
+(function () {
+  const toggleBtn = document.getElementById('theme-toggle');
+  const bodyEl = document.body;
+  let moonRotation = 0;
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      moonRotation += 360;
+      toggleBtn.style.transform = `rotate(${moonRotation}deg)`;
+      bodyEl.classList.toggle('light-mode');
+      toggleBtn.textContent = bodyEl.classList.contains('light-mode') ? '☀️' : '🌙';
+      toggleBtn.blur();
+    });
+  }
+
+  // Mobile menu/hamburger (works on project page nav too)
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  function setMenuOpen(open) {
+    if (!navLinks || !hamburger) return;
+    navLinks.classList.toggle('open', open);
+    hamburger.classList.toggle('active', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  if (hamburger && navLinks) {
+    setMenuOpen(false);
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const nowOpen = !navLinks.classList.contains('open');
+      setMenuOpen(nowOpen);
+    });
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) setMenuOpen(false);
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenuOpen(false);
+    });
+  }
+
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
+  const lbCaption = lightbox && lightbox.querySelector('.lightbox-caption');
+  const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
+
+  function openLightbox(imgEl) {
+    if (!lightbox || !lbImg) return;
+    lbImg.src = imgEl.src;
+    lbImg.alt = imgEl.alt || '';
+    lbCaption.textContent = imgEl.getAttribute('data-caption') || imgEl.alt || '';
+    lightbox.setAttribute('aria-hidden', 'false');
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lbClose && lbClose.focus();
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    // clear image to release memory
+    if (lbImg) lbImg.src = '';
+  }
+
+  const galleryImgs = document.querySelectorAll('.project-gallery img');
+  galleryImgs.forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+    img.style.cursor = 'zoom-in';
+  });
+
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      // close if click outside the image
+      if (e.target === lightbox || e.target === lbImg === false) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
+  }
+
+})();
+</script>
+
 </body>
 </html>
-
