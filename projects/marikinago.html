@@ -35,7 +35,6 @@
     </nav>
   </header>
 
-  <div style="height: calc(var(--header-height));"></div>
 
   <main class="project-page">
     <section class="project-main">
@@ -68,7 +67,7 @@
 
         <img src="../assets/projects/marikina/2.jpg" alt="MarikinaGo screenshot 2" data-caption="Profile Page" data-desc="wiEhO hiEhoU" loading="lazy">
         
-        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3" data-caption="Mapping Page" data-desc="W/ Virtual Loc wAow"loading="lazy">
+        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3" data-caption="Mapping Page" data-desc="W/ Virtual Loc wAow" loading="lazy">
       </div>
 
       <h2>Available on</h2>
@@ -104,13 +103,24 @@
   <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
   <button class="lightbox-close" aria-label="Close">✕</button>
 
-<div class="lightbox-figure" role="document">
-  <img class="lightbox-img" alt="">
-  <div class="lightbox-desc" aria-hidden="true"></div>
-</div>
+  <div class="lightbox-content" role="document">
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous image">‹</button>
 
+    <div class="lightbox-figure">
+      <img class="lightbox-img" alt="">
+    </div>
 
-  <div class="lightbox-badge" aria-hidden="true"></div>
+    <aside class="lightbox-panel" aria-hidden="true">
+      <div class="lightbox-badge" aria-hidden="true"></div>
+      <h3 class="lightbox-panel-title"></h3>
+      <div class="lightbox-desc"></div>
+      <div class="lightbox-panel-actions">
+        <a class="lightbox-openlink" href="#" target="_blank" rel="noopener">Open image</a>
+      </div>
+    </aside>
+
+    <button class="lightbox-nav lightbox-next" aria-label="Next image">›</button>
+  </div>
 </div>
 
 <script>
@@ -155,62 +165,79 @@
   }
 
   // --- LIGHTBOX AYOS KASI---
-const lightbox = document.getElementById('lightbox');
-const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
-const lbDesc = lightbox && (lightbox.querySelector('.lightbox-desc') || lightbox.querySelector('.lightbox-caption'));
-const lbBadge = lightbox && (lightbox.querySelector('.lightbox-badge'));
-const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
+(function () {
+  const gallery = Array.from(document.querySelectorAll('.project-gallery img'));
+  if (!gallery.length) return;
 
-function openLightbox(imgEl) {
-  if (!lightbox || !lbImg) return;
-  const src = imgEl.dataset.full || imgEl.src;
-  lbImg.src = src;
-  lbImg.alt = imgEl.alt || '';
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
+  const lbBadge = lightbox && lightbox.querySelector('.lightbox-badge');
+  const lbTitle = lightbox && lightbox.querySelector('.lightbox-panel-title');
+  const lbDesc = lightbox && lightbox.querySelector('.lightbox-desc');
+  const lbOpenLink = lightbox && lightbox.querySelector('.lightbox-openlink');
+  const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
+  const btnPrev = lightbox && lightbox.querySelector('.lightbox-prev');
+  const btnNext = lightbox && lightbox.querySelector('.lightbox-next');
 
-  // set badge (top-right) if present
-  if (lbBadge) {
-    lbBadge.textContent = imgEl.dataset.caption || imgEl.alt || '';
-  }
-  // set description overlay if present
-  if (lbDesc) {
-    lbDesc.textContent = imgEl.dataset.desc || imgEl.title || '';
-  }
+  let currentIndex = 0;
 
-  lightbox.setAttribute('aria-hidden', 'false');
-  lightbox.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  lbClose && lbClose.focus();
-}
+  function showAt(idx) {
+    currentIndex = (idx + gallery.length) % gallery.length;
+    const src = gallery[currentIndex].dataset.full || gallery[currentIndex].src;
+    const caption = gallery[currentIndex].dataset.caption || gallery[currentIndex].alt || '';
+    const desc = gallery[currentIndex].dataset.desc || gallery[currentIndex].title || '';
+    // set elements (only if present)
+    if (lbImg) lbImg.src = src;
+    if (lbImg) lbImg.alt = gallery[currentIndex].alt || '';
+    if (lbBadge) lbBadge.textContent = caption;
+    if (lbTitle) lbTitle.textContent = caption || 'Image';
+    if (lbDesc) lbDesc.textContent = desc || '';
+    if (lbOpenLink) lbOpenLink.href = src;
 
-function closeLightbox() {
-  if (!lightbox) return;
-  lightbox.setAttribute('aria-hidden', 'true');
-  lightbox.classList.remove('open');
-  document.body.style.overflow = '';
-  if (lbImg) lbImg.src = '';
-  if (lbBadge) lbBadge.textContent = '';
-  if (lbDesc) lbDesc.textContent = '';
-}
-
-document.querySelectorAll('.project-gallery img').forEach(img => {
-  img.style.cursor = 'zoom-in';
-  img.addEventListener('click', () => openLightbox(img));
-});
-
-lbClose && lbClose.addEventListener('click', closeLightbox);
-if (lightbox) {
-  lightbox.addEventListener('click', (e) => {
-    if (!e.target.closest('.lightbox-figure') && !e.target.closest('.lightbox-close')) {
-      closeLightbox();
+    if (lightbox) {
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      lbClose && lbClose.focus();
     }
+  }
+
+  function closeViewer() {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lbImg) lbImg.src = '';
+  }
+
+  function next() { showAt(currentIndex + 1); }
+  function prev() { showAt(currentIndex - 1); }
+
+  // attach click to thumbnails
+  gallery.forEach((img, i) => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => showAt(i));
   });
+
+  // UI button handlers
+  btnNext && btnNext.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+  btnPrev && btnPrev.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+  lbClose && lbClose.addEventListener('click', closeViewer);
+
+  // clicking outside content closes viewer
+  lightbox && lightbox.addEventListener('click', (e) => {
+    if (!e.target.closest('.lightbox-content') && !e.target.closest('.lightbox-figure')) closeViewer();
+  });
+
+  // keyboard
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    if (!lightbox || !lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeViewer();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
   });
-}
-
-
-})();
+})();   
+})(); 
 </script>
 
 </body>
