@@ -91,11 +91,16 @@
     <p>© 2025 Lyeonnie Muñoz. Built with 💜</p>
   </footer>
 
-  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
-    <button class="lightbox-close" aria-label="Close">✕</button>
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <button class="lightbox-close" aria-label="Close">✕</button>
+
+  <div class="lightbox-figure" role="document">
     <img class="lightbox-img" alt="">
-    <div class="lightbox-caption" aria-hidden="true"></div>
+    <div class="lightbox-desc" aria-hidden="true"></div>
   </div>
+
+  <div class="lightbox-badge" aria-hidden="true"></div>
+</div>
 
 <script>
 (function () {
