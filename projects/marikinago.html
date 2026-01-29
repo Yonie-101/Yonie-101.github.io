@@ -39,8 +39,16 @@
 
   <main class="project-page">
     <section class="project-main">
-      <h1 class="project-title">MarikinaGo</h1>
-      <p class="project-subtext">Flutter · Firebase · Dart</p>
+  <!-- hero/banner -->
+  <div class="project-hero">
+    <img src="../assets/projects/marikina/hero.jpg" alt="MarikinaGo hero banner" class="project-hero-img" loading="lazy">
+    <div class="project-hero-overlay">
+      <div class="project-hero-text">
+        <h1 class="project-title">MarikinaGo</h1>
+        <p class="project-subtext">Flutter · Firebase · Dart</p>
+      </div>
+    </div>
+  </div>
       <hr class="project-sep" />
       <div class="project-meta">2024 · City tourism & booking</div>
 
@@ -56,9 +64,11 @@
       <h2>Gallery</h2>
       <div class="project-gallery">
         <!-- Need maglagay gallery images in assets/projects/marikina-go/ w name 1.jpg, 2.jpg, ... -->
-        <img src="../assets/projects/marikina/1.jpg" alt="MarikinaGo screenshot 1" loading="lazy">
-        <img src="../assets/projects/marikina/2.jpg" alt="MarikinaGo screenshot 2" loading="lazy">
-        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3" loading="lazy">
+        <img src="../assets/projects/marikina/1.jpg" alt="MarikinaGo screenshot 1" data-caption="Terms & Conditions" data-desc="Samting Samting ahhaha" loading="lazy">
+
+        <img src="../assets/projects/marikina/2.jpg" alt="MarikinaGo screenshot 2" data-caption="Profile Page" data-desc="wiEhO hiEhoU" loading="lazy">
+        
+        <img src="../assets/projects/marikina/3.jpg" alt="MarikinaGo screenshot 3" data-caption="Mapping Page" data-desc="W/ Virtual Loc wAow"loading="lazy">
       </div>
 
       <h2>Available on</h2>
@@ -144,47 +154,61 @@
     });
   }
 
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
-  const lbCaption = lightbox && lightbox.querySelector('.lightbox-caption');
-  const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
+  // --- LIGHTBOX AYOS KASI---
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox && lightbox.querySelector('.lightbox-img');
+const lbDesc = lightbox && (lightbox.querySelector('.lightbox-desc') || lightbox.querySelector('.lightbox-caption'));
+const lbBadge = lightbox && (lightbox.querySelector('.lightbox-badge'));
+const lbClose = lightbox && lightbox.querySelector('.lightbox-close');
 
-  function openLightbox(imgEl) {
-    if (!lightbox || !lbImg) return;
-    lbImg.src = imgEl.src;
-    lbImg.alt = imgEl.alt || '';
-    lbCaption.textContent = imgEl.getAttribute('data-caption') || imgEl.alt || '';
-    lightbox.setAttribute('aria-hidden', 'false');
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    lbClose && lbClose.focus();
+function openLightbox(imgEl) {
+  if (!lightbox || !lbImg) return;
+  const src = imgEl.dataset.full || imgEl.src;
+  lbImg.src = src;
+  lbImg.alt = imgEl.alt || '';
+
+  // set badge (top-right) if present
+  if (lbBadge) {
+    lbBadge.textContent = imgEl.dataset.caption || imgEl.alt || '';
+  }
+  // set description overlay if present
+  if (lbDesc) {
+    lbDesc.textContent = imgEl.dataset.desc || imgEl.title || '';
   }
 
-  function closeLightbox() {
-    if (!lightbox) return;
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightbox.classList.remove('open');
-    document.body.style.overflow = '';
-    // clear image to release memory
-    if (lbImg) lbImg.src = '';
-  }
+  lightbox.setAttribute('aria-hidden', 'false');
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbClose && lbClose.focus();
+}
 
-  const galleryImgs = document.querySelectorAll('.project-gallery img');
-  galleryImgs.forEach(img => {
-    img.addEventListener('click', () => openLightbox(img));
-    img.style.cursor = 'zoom-in';
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.setAttribute('aria-hidden', 'true');
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lbImg) lbImg.src = '';
+  if (lbBadge) lbBadge.textContent = '';
+  if (lbDesc) lbDesc.textContent = '';
+}
+
+document.querySelectorAll('.project-gallery img').forEach(img => {
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', () => openLightbox(img));
+});
+
+lbClose && lbClose.addEventListener('click', closeLightbox);
+if (lightbox) {
+  lightbox.addEventListener('click', (e) => {
+    if (!e.target.closest('.lightbox-figure') && !e.target.closest('.lightbox-close')) {
+      closeLightbox();
+    }
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
+}
 
-  if (lbClose) lbClose.addEventListener('click', closeLightbox);
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      // close if click outside the image
-      if (e.target === lightbox || e.target === lbImg === false) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
-    });
-  }
 
 })();
 </script>
